@@ -29,11 +29,15 @@ CowRobot::CowRobot()
 	m_DriveEncoder = new Encoder(MXP_QEI_5_A, MXP_QEI_5_B, false, Encoder::k1X);
 	m_DriveEncoder->SetDistancePerPulse(0.05235983333333); // 6*pi/360
 
+	m_ShooterEncoder = new Encoder(MXP_QEI_1_A, MXP_QEI_1_B, false, Encoder::k1X);
+
 	m_MatchTime = 0;
 
 	m_LEDDisplay = new CowLib::CowAlphaNum(0x70);
 
 	m_Gyro = CowLib::CowGyro::GetInstance();
+
+	m_Shooter = new Shooter(0, m_ShooterEncoder);
 	//m_Gyro->Reset();
 	m_PowerDistributionPanel = new PowerDistributionPanel();
 	m_WebServer = new CowLib::CowLogger();
@@ -101,6 +105,8 @@ void CowRobot::handle()
 
 	SetLeftMotors(tmpLeftMotor);
 	SetRightMotors(tmpRightMotor);
+
+	m_Shooter->Handle();
 	if(m_DSUpdateCount % 10 == 0)
 	{
 		//5 is drive

@@ -15,6 +15,7 @@
 #include "CowConstants.h"
 #include "CowLib/CowAlphaNum.h"
 #include "CowGyro.h"
+#include "Subsystems/Shooter.h"
 
 class CowRobot
 {
@@ -35,6 +36,10 @@ private:
 	
 	CowLib::CowGyro *m_Gyro;
 	Encoder *m_DriveEncoder;
+	Encoder *m_ShooterEncoder;
+
+	Shooter *m_Shooter;
+
 
 	PowerDistributionPanel *m_PowerDistributionPanel;
 
@@ -90,6 +95,11 @@ public:
 	Encoder *GetEncoder()
 	{
 		return m_DriveEncoder;
+	}
+
+	Shooter *GetShooter()
+	{
+		return m_Shooter;
 	}
 
 	void AddAutoOffsetAngle()

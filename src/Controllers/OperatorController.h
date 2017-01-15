@@ -19,6 +19,12 @@ class OperatorController : public GenericController
 private:
 	OperatorController();
 	CowControlBoard *m_CB;
+	CowLib::CowLatch *m_ShootLatch;
+	CowLib::CowLatch *m_SpoolShooterLatch;
+
+	float time;
+	float previousTime;
+	float speed;
 
 public:
 	OperatorController(CowControlBoard *controlboard);
