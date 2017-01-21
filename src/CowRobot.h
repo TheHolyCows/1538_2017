@@ -8,6 +8,7 @@
 #include <CowLib/CowLogger.h>
 #include <WPILib.h>
 #include <CANTalon.h>
+#include <Subsystems/Conveyer.h>
 #include "Controllers/GenericController.h"
 #include "CowLib/CowLib.h"
 #include "CowControlBoard.h"
@@ -16,6 +17,7 @@
 #include "CowLib/CowAlphaNum.h"
 #include "CowGyro.h"
 #include "Subsystems/Shooter.h"
+#include "Subsystems/Conveyer.h"
 
 class CowRobot
 {
@@ -39,6 +41,9 @@ private:
 	Encoder *m_ShooterEncoder;
 
 	Shooter *m_Shooter;
+	Conveyer *m_Conveyer;
+
+	SmartDashboard *m_Dashboard;
 
 
 	PowerDistributionPanel *m_PowerDistributionPanel;
@@ -100,6 +105,16 @@ public:
 	Shooter *GetShooter()
 	{
 		return m_Shooter;
+	}
+
+	Conveyer *GetConveyer()
+	{
+		return m_Conveyer;
+	}
+
+	SmartDashboard *GetSmartDashboard()
+	{
+		return m_Dashboard;
 	}
 
 	void AddAutoOffsetAngle()

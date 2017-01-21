@@ -101,6 +101,11 @@ void Shooter::Handle()
 			m_MotorA->Set(m_Speed);
 		}
 	}
+
+	if(m_Dashboard)
+	{
+		m_Dashboard->PutNumber("Shooter RPM", -m_EncoderASpeed);
+	}
 }
 
 void Shooter::Reset()
@@ -112,4 +117,9 @@ void Shooter::Reset()
 
 Shooter::~Shooter() {
 	// TODO Auto-generated destructor stub
+}
+
+void Shooter::SetDashboard(SmartDashboard* dashboard)
+{
+	m_Dashboard = dashboard;
 }

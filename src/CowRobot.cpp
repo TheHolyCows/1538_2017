@@ -37,7 +37,13 @@ CowRobot::CowRobot()
 
 	m_Gyro = CowLib::CowGyro::GetInstance();
 
+	m_Dashboard = new SmartDashboard();
+
 	m_Shooter = new Shooter(0, m_ShooterEncoder);
+	m_Conveyer = new Conveyer(1);
+
+	m_Shooter->SetDashboard(m_Dashboard);
+
 	//m_Gyro->Reset();
 	m_PowerDistributionPanel = new PowerDistributionPanel();
 	m_WebServer = new CowLib::CowLogger();
@@ -107,6 +113,8 @@ void CowRobot::handle()
 	SetRightMotors(tmpRightMotor);
 
 	m_Shooter->Handle();
+	m_Conveyer->Handle();
+
 	if(m_DSUpdateCount % 10 == 0)
 	{
 		//5 is drive

@@ -30,5 +30,20 @@ void OperatorController::handle(CowRobot *bot)
 		bot->GetShooter()->SetManualSpeed(0);
 	}
 
+	// Turn on Conveyer
+	if(m_CB->GetOperatorButton(5) && bot->GetShooter()->IsOnTarget())
+	{
+		bot->GetConveyer()->SetSpeed(1);
+	}
+	else if(m_CB->GetOperatorButton(7))
+	{
+		bot->GetConveyer()->SetSpeed(-1);
+	}
+	else
+	{
+		bot->GetConveyer()->SetSpeed(0);
+	}
+
+	// Exhaust
 }
 
