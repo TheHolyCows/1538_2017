@@ -83,7 +83,9 @@ void Shooter::Handle()
 
 	double robotVoltage = DriverStation::GetInstance().GetBatteryVoltage();
 
-	double motorAPID_Rate = m_PID_A_Rate->Calculate(m_EncoderASpeed);
+	double lpfValue = m_LPF_A->Calculate(m_EncoderASpeed);
+
+	double motorAPID_Rate = m_PID_A_Rate->Calculate(lpfValue);
 
 	double motorAPID_Voltage = m_PID_A_Rate->GetSetpoint() * (CONSTANT("SHOOTER_MAX_VLT") / robotVoltage) * CONSTANT("SHOOTER_A_F");
 
@@ -104,7 +106,8 @@ void Shooter::Handle()
 
 	if(m_Dashboard)
 	{
-		m_Dashboard->PutNumber("Shooter RPM", -m_EncoderASpeed);
+		m_Dashboard->PutNumber("Shooter RPM raw", -m_EncoderASpeed);
+		m_Dashboard->PutNumber("Shooter RPM smooth", -lpfValue);
 	}
 }
 
