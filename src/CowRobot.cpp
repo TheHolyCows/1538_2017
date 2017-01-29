@@ -37,12 +37,11 @@ CowRobot::CowRobot()
 
 	m_Gyro = CowLib::CowGyro::GetInstance();
 
-	m_Dashboard = new SmartDashboard();
-
 	m_Shooter = new Shooter(0, m_ShooterEncoder);
 	m_Conveyer = new Conveyer(1);
+	m_Turret = new Turret(2);
 
-	m_Shooter->SetDashboard(m_Dashboard);
+	m_Pixy = Pixy::GetInstance();
 
 	//m_Gyro->Reset();
 	m_PowerDistributionPanel = new PowerDistributionPanel();
@@ -114,6 +113,7 @@ void CowRobot::handle()
 
 	m_Shooter->Handle();
 	m_Conveyer->Handle();
+	m_Turret->Handle();
 
 	if(m_DSUpdateCount % 10 == 0)
 	{

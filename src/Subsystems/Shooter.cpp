@@ -94,7 +94,7 @@ void Shooter::Handle()
 	{
 		if(m_PIDEnabled)
 		{
-			std::cout << "S1: " << m_EncoderASpeed << "VA: " << motorAPID_Voltage << " RV: " << robotVoltage << std::endl;
+			//std::cout << "S1: " << m_EncoderASpeed << "VA: " << motorAPID_Voltage << " RV: " << robotVoltage << std::endl;
 
 			m_MotorA->Set(motorAPID_Rate + motorAPID_Voltage);
 		}
@@ -104,11 +104,9 @@ void Shooter::Handle()
 		}
 	}
 
-	if(m_Dashboard)
-	{
-		m_Dashboard->PutNumber("Shooter RPM raw", -m_EncoderASpeed);
-		m_Dashboard->PutNumber("Shooter RPM smooth", -lpfValue);
-	}
+	//SmartDashboard::PutNumber("Shooter RPM raw", -m_EncoderASpeed);
+	//SmartDashboard::PutNumber("Shooter RPM smooth", -lpfValue);
+
 }
 
 void Shooter::Reset()
@@ -120,9 +118,4 @@ void Shooter::Reset()
 
 Shooter::~Shooter() {
 	// TODO Auto-generated destructor stub
-}
-
-void Shooter::SetDashboard(SmartDashboard* dashboard)
-{
-	m_Dashboard = dashboard;
 }

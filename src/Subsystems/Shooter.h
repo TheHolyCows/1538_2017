@@ -23,9 +23,6 @@ private:
 
 	CowLib::CowLPF* m_LPF_A;
 
-	SmartDashboard* m_Dashboard;
-
-
 	bool m_PIDEnabled;
 	double m_EncoderASpeed;
 	Shooter();
