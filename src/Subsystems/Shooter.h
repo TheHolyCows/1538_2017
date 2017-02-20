@@ -9,25 +9,21 @@
 #define SRC_SUBSYSTEMS_SHOOTER_H_
 
 #include <WPILib.h>
+#include <CANTalon.h>
 #include "../CowLib/CowPID.h"
 #include "../CowLib/CowLPF.h"
 
 class Shooter {
 private:
-	Talon* m_MotorA;
+	CANTalon *m_MotorA;
+	CANTalon *m_MotorB;
+	CANTalon *m_MotorFeeder;
 	float m_Speed;
-
-	Encoder *m_EncoderA;
-
-	CowLib::CowPID* m_PID_A_Rate;
-
-	CowLib::CowLPF* m_LPF_A;
-
 	bool m_PIDEnabled;
-	double m_EncoderASpeed;
+
 	Shooter();
 public:
-	Shooter(uint8_t motorA, Encoder* encoderA);
+	Shooter(uint32_t motorA, uint32_t motorB, uint32_t motorFeeder);
 	void SetManualSpeed(float speed);
 	void SetAutoSpeed(float speedA);
 	void SetPIDState(bool state);
@@ -35,6 +31,7 @@ public:
 	double GetMotorBSpeed();
 	bool IsOnTarget();
 	bool HasShotBall();
+	void SetFeederSpeed(float speed);
 	void ResetConstants();
 	void Reset();
 	void Handle();

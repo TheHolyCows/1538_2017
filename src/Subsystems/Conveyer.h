@@ -9,10 +9,11 @@
 #define SRC_SUBSYSTEMS_CONVEYER_H_
 
 #include <WPILib.h>
+#include <CANTalon.h>
 
 class Conveyer {
 private:
-	Talon* m_MotorA;
+	CANTalon *m_MotorA;
 	float m_Speed;
 
 public:

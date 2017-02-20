@@ -82,6 +82,7 @@ void CowBase::DisabledPeriodic()
 	{
 		m_Constants->RestoreData();
 		m_Bot->GetShooter()->ResetConstants();
+		m_Bot->GetTurret()->ResetConstants();
 
 		if(m_ControlBoard->GetDriveButton(1))
 		{

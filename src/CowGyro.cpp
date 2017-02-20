@@ -7,6 +7,7 @@
 
 #include <CowGyro.h>
 #include <CowLib/CowLogger.h>
+#include <WPILib.h>
 #include <cmath>
 
 namespace CowLib
@@ -62,6 +63,7 @@ CowGyro::~CowGyro()
 void CowGyro::Handle()
 {
 	bool initialized = false;
+
 	while(!initialized)
 	{
 

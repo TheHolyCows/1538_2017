@@ -12,7 +12,7 @@ Conveyer::Conveyer(uint8_t motorA)
 	m_MotorA(0),
 	m_Speed(0)
 {
-	m_MotorA = new Talon(motorA);
+	m_MotorA = new CANTalon(motorA);
 }
 
 Conveyer::~Conveyer() {

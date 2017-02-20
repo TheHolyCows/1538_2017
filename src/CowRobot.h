@@ -43,7 +43,8 @@ private:
 	Encoder *m_ShooterEncoder;
 
 	Shooter *m_Shooter;
-	Conveyer *m_Conveyer;
+	Conveyer *m_ConveyerUpper;
+	Conveyer *m_ConveyerLower;
 	Turret *m_Turret;
 
 	Pixy *m_Pixy;
@@ -109,9 +110,14 @@ public:
 		return m_Shooter;
 	}
 
-	Conveyer *GetConveyer()
+	Conveyer *GetConveyerUpper()
 	{
-		return m_Conveyer;
+		return m_ConveyerUpper;
+	}
+
+	Conveyer *GetConveyerLower()
+	{
+		return m_ConveyerLower;
 	}
 
 	Turret *GetTurret()

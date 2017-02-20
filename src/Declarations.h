@@ -17,22 +17,23 @@
 #define GYRO_SENSITIVITY				0.007
 
 // CAN IDs
-#define CAN_ID_WINCH					1
-#define CAN_ID_CONVEYOR_BOTTOM			2
-#define CAN_ID_CONVEYOR_TOP				3
-#define CAN_ID_BALL_INTAKE				4
-#define CAN_ID_ARM						5
-#define CAN_ID_TURRET					6
-#define CAN_ID_SHOOTER_R				7
-#define CAN_ID_SHOOTER_L				8
-#define CAN_ID_SHOOTER_FEEDER			9
-#define CAN_ID_GEAR_INTAKE				10
-#define CAN_ID_DRIVE_L_A				11
-#define CAN_ID_DRIVE_L_B				12
-#define CAN_ID_DRIVE_L_C				13
-#define CAN_ID_DRIVE_R_A				14
-#define CAN_ID_DRIVE_R_B				15
-#define CAN_ID_DRIVE_R_C				16
+#define DRIVE_RIGHT_A					1
+#define DRIVE_RIGHT_B					2
+#define DRIVE_RIGHT_C					3
+#define DRIVE_LEFT_A					4
+#define DRIVE_LEFT_B					5
+#define DRIVE_LEFT_C					6
+
+#define ARM_A							7
+#define ARM_B							8
+
+#define SHOOTER_A						9
+#define SHOOTER_B						10
+#define LEFT_CENTER						11
+#define INTAKE_A						12
+#define INTAKE_B						13
+#define RIGHT_CENTER					14
+#define FLASHLIGHT						15
 
 #define MXP_QEI_1_A						10
 #define MXP_QEI_1_B						11

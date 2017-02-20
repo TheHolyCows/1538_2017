@@ -11,13 +11,13 @@ CowRobot::CowRobot()
 		
 	m_Controller = NULL;
 	// Set up drive motors
-	m_LeftDriveA = new CANTalon(DRIVE_LEFT_A);
-	m_LeftDriveB = new CANTalon(DRIVE_LEFT_B);
-	m_LeftDriveC = new CANTalon(DRIVE_LEFT_C);
+	m_LeftDriveA = new CANTalon(11);
+	m_LeftDriveB = new CANTalon(12);
+	m_LeftDriveC = new CANTalon(13);
 
-	m_RightDriveA = new CANTalon(DRIVE_RIGHT_A);
-	m_RightDriveB = new CANTalon(DRIVE_RIGHT_B);
-	m_RightDriveC = new CANTalon(DRIVE_RIGHT_C);
+	m_RightDriveA = new CANTalon(14);
+	m_RightDriveB = new CANTalon(15);
+	m_RightDriveC = new CANTalon(16);
 
 	m_LeftDriveA->ConfigNeutralMode(CANTalon::NeutralMode::kNeutralMode_Brake);
 	m_LeftDriveB->ConfigNeutralMode(CANTalon::NeutralMode::kNeutralMode_Brake);
@@ -37,9 +37,10 @@ CowRobot::CowRobot()
 
 	m_Gyro = CowLib::CowGyro::GetInstance();
 
-	m_Shooter = new Shooter(0, m_ShooterEncoder);
-	m_Conveyer = new Conveyer(1);
-	m_Turret = new Turret(2);
+	m_Shooter = new Shooter(7, 8, 9);
+	m_ConveyerLower = new Conveyer(3);
+	m_ConveyerUpper = new Conveyer(2);
+	m_Turret = new Turret(6);
 
 	m_Pixy = Pixy::GetInstance();
 
@@ -112,7 +113,8 @@ void CowRobot::handle()
 	SetRightMotors(tmpRightMotor);
 
 	m_Shooter->Handle();
-	m_Conveyer->Handle();
+	m_ConveyerUpper->Handle();
+	m_ConveyerLower->Handle();
 	m_Turret->Handle();
 
 	if(m_DSUpdateCount % 10 == 0)

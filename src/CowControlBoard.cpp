@@ -1,4 +1,5 @@
 #include "CowControlBoard.h"
+#include <WPILib.h>
 
 // Constructor for Cow Control Board
 CowControlBoard::CowControlBoard()

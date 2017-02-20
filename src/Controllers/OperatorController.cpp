@@ -20,30 +20,55 @@ void OperatorController::handle(CowRobot *bot)
 	{
 		std::cout << "Setting state to SPOOL_PID_CONTROL" << std::endl;
 		bot->GetShooter()->SetPIDState(true);
-		// start shooter
-		bot->GetShooter()->SetAutoSpeed(CONSTANT("SHOOTER_RPM_A"));
+//		// start shooter
+		bot->GetShooter()->SetAutoSpeed(CONSTANT("SHOOTER_RPM"));
+
+		//bot->GetShooter()->SetManualSpeed();
 	}
 	else if(m_CB->GetOperatorButton(1))
 	{
 		m_SpoolShooterLatch->ResetLatch();
 		bot->GetShooter()->SetPIDState(false);
-		bot->GetShooter()->SetManualSpeed(0);
+		bot->GetShooter()->SetAutoSpeed(0);
 	}
 
-	// Turn on Conveyer
-	if(m_CB->GetOperatorButton(5) && bot->GetShooter()->IsOnTarget())
+	if (m_CB->GetOperatorButton(5))
 	{
-		bot->GetConveyer()->SetSpeed(CONSTANT("CONVEYER_A"));
-	}
-	else if(m_CB->GetOperatorButton(7))
-	{
-		bot->GetConveyer()->SetSpeed(-1);
+		bot->GetShooter()->SetFeederSpeed(-1);
+		bot->GetConveyerUpper()->SetSpeed(-1);
+		bot->GetConveyerLower()->SetSpeed(-1);
 	}
 	else
 	{
-		bot->GetConveyer()->SetSpeed(0);
+		bot->GetShooter()->SetFeederSpeed(0);
+		bot->GetConveyerUpper()->SetSpeed(0);
+		bot->GetConveyerLower()->SetSpeed(0);
 	}
 
+//	// Turn on Conveyer
+//	if(m_CB->GetOperatorButton(5) && bot->GetShooter()->IsOnTarget())
+//	{
+//		bot->GetConveyer()->SetSpeed(CONSTANT("CONVEYER_A"));
+//	}
+//	else if(m_CB->GetOperatorButton(7))
+//	{
+//		bot->GetConveyer()->SetSpeed(-1);
+//	}
+//	else
+//	{
+//		bot->GetConveyer()->SetSpeed(0);
+//	}
+
 	// Exhaust
+
+	// Turret
+	// red goes right
+	// green goes left
+	//bot->GetTurret()->SetSpeed(m_CB->GetOperatorGamepadAxis(0));
+
+	float newSetPoint;
+
+	newSetPoint = bot->GetTurret()->GetSetPoint() + (CowLib::Deadband(m_CB->GetOperatorGamepadAxis(0), 0.1) * 2000);
+	bot->GetTurret()->SetSetPoint(newSetPoint);
 }
 
