@@ -304,7 +304,7 @@ void CowRobot::SetLeftMotors(float val)
 
 	m_LeftDriveA->Set(val);
 	m_LeftDriveB->Set(val);
-	m_LeftDriveC->Set(-val);
+	m_LeftDriveC->Set(val);
 
 }
 
@@ -316,7 +316,7 @@ void CowRobot::SetRightMotors(float val)
 	if (val < -1.0)
 		val = -1.0;
 
-	m_RightDriveA->Set(val);
+	m_RightDriveA->Set(-val);
 	m_RightDriveB->Set(-val);
 	m_RightDriveC->Set(-val);
 }
