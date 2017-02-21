@@ -70,5 +70,17 @@ void OperatorController::handle(CowRobot *bot)
 
 	newSetPoint = bot->GetTurret()->GetSetPoint() + (CowLib::Deadband(m_CB->GetOperatorGamepadAxis(0), 0.1) * 2000);
 	bot->GetTurret()->SetSetPoint(newSetPoint);
+
+	//bot->GetGearIntake()->SetPosition(CowLib::Deadband(m_CB->GetOperatorGamepadAxis(2), 0.1));
+
+	//
+	if (m_CB->GetOperatorButton(6))
+	{
+		bot->GetGearIntake()->SetPosition(bot->GetGearIntake()->GetGroundOffset());
+	}
+	else
+	{
+		bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
+	}
 }
 

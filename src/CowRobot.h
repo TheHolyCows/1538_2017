@@ -20,6 +20,7 @@
 #include "Subsystems/Shooter.h"
 #include "Subsystems/Conveyer.h"
 #include "Subsystems/Turret.h"
+#include "Subsystems/GearIntake.h"
 
 class CowRobot
 {
@@ -46,6 +47,8 @@ private:
 	Conveyer *m_ConveyerUpper;
 	Conveyer *m_ConveyerLower;
 	Turret *m_Turret;
+
+	GearIntake *m_GearIntake;
 
 	Pixy *m_Pixy;
 
@@ -123,6 +126,11 @@ public:
 	Turret *GetTurret()
 	{
 		return m_Turret;
+	}
+
+	GearIntake *GetGearIntake()
+	{
+		return m_GearIntake;
 	}
 
 	Pixy *GetPixy()

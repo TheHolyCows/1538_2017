@@ -41,6 +41,7 @@ CowRobot::CowRobot()
 	m_ConveyerLower = new Conveyer(3);
 	m_ConveyerUpper = new Conveyer(2);
 	m_Turret = new Turret(6);
+	m_GearIntake = new GearIntake(5, 10);
 
 	m_Pixy = Pixy::GetInstance();
 
@@ -116,6 +117,7 @@ void CowRobot::handle()
 	m_ConveyerUpper->Handle();
 	m_ConveyerLower->Handle();
 	m_Turret->Handle();
+	m_GearIntake->Handle();
 
 	if(m_DSUpdateCount % 10 == 0)
 	{
