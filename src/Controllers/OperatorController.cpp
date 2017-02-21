@@ -82,5 +82,33 @@ void OperatorController::handle(CowRobot *bot)
 	{
 		bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
 	}
+
+	// Gear intake and exhaust
+	if (m_CB->GetOperatorButton(2))
+	{
+		bot->GetGearIntake()->SetSpeed(1);
+	}
+	else if (m_CB->GetOperatorButton(3))
+	{
+		bot->GetGearIntake()->SetSpeed(-1);
+	}
+	else
+	{
+		bot->GetGearIntake()->SetSpeed(0);
+	}
+
+	// Ball intake and exhaust
+	if (m_CB->GetOperatorButton(4))
+	{
+		bot->GetBallIntakeConveyer()->SetSpeed(1);
+	}
+	else if (m_CB->GetOperatorButton(7))
+	{
+		bot->GetBallIntakeConveyer()->SetSpeed(-1);
+	}
+	else
+	{
+		bot->GetBallIntakeConveyer()->SetSpeed(0);
+	}
 }
 

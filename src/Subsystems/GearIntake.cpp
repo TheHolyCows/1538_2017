@@ -58,6 +58,7 @@ void GearIntake::Handle()
 {
 	m_MotorIntake->Set(m_Speed);
 	m_MotorArm->SetSetpoint(m_Position);
+
 	//m_MotorArm->Set(m_Position);
 	std::cout << "GeartIntake sp: " << m_Position << ", offset: " << m_Ground << ", pos: " << m_MotorArm->GetPosition() << std::endl;
 }

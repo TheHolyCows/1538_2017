@@ -40,6 +40,7 @@ CowRobot::CowRobot()
 	m_Shooter = new Shooter(7, 8, 9);
 	m_ConveyerLower = new Conveyer(3);
 	m_ConveyerUpper = new Conveyer(2);
+	m_BallIntakeConveyer = new Conveyer(4);
 	m_Turret = new Turret(6);
 	m_GearIntake = new GearIntake(5, 10);
 
@@ -118,6 +119,7 @@ void CowRobot::handle()
 	m_ConveyerLower->Handle();
 	m_Turret->Handle();
 	m_GearIntake->Handle();
+	m_BallIntakeConveyer->Handle();
 
 	if(m_DSUpdateCount % 10 == 0)
 	{

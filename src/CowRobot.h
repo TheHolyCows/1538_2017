@@ -1,5 +1,5 @@
 //==================================================
-// Copyright (C) 2015 Team 1538 / The Holy Cows
+// Copyright (C) 2017 Team 1538 / The Holy Cows
 //==================================================
 
 #ifndef __COW_ROBOT_H__
@@ -46,6 +46,7 @@ private:
 	Shooter *m_Shooter;
 	Conveyer *m_ConveyerUpper;
 	Conveyer *m_ConveyerLower;
+	Conveyer *m_BallIntakeConveyer;
 	Turret *m_Turret;
 
 	GearIntake *m_GearIntake;
@@ -121,6 +122,11 @@ public:
 	Conveyer *GetConveyerLower()
 	{
 		return m_ConveyerLower;
+	}
+
+	Conveyer *GetBallIntakeConveyer()
+	{
+		return m_BallIntakeConveyer;
 	}
 
 	Turret *GetTurret()
