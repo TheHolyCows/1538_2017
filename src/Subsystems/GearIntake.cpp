@@ -14,7 +14,8 @@ GearIntake::GearIntake(uint8_t motorArm, uint8_t motorIntake) :
 	m_MotorIntake(0),
 	m_Speed(0),
 	m_Position(0),
-	m_Ground(0)
+	m_Ground(0),
+	m_GearIntakeTime(0)
 {
 	m_MotorArm = new CANTalon(motorArm);
 	m_MotorArm->SetSensorDirection(true);
@@ -60,7 +61,20 @@ void GearIntake::Handle()
 	m_MotorArm->SetSetpoint(m_Position);
 
 	//m_MotorArm->Set(m_Position);
-	std::cout << "GeartIntake sp: " << m_Position << ", offset: " << m_Ground << ", pos: " << m_MotorArm->GetPosition() << std::endl;
+	//std::cout << "GeartIntake sp: " << m_Position << ", offset: " << m_Ground << ", pos: " << m_MotorArm->GetPosition() << std::endl;
+
+	//double watts = m_MotorIntake->GetOutputCurrent()  * m_MotorIntake->GetOutputVoltage();
+	//std::cout << "GearIntake watts:" << watts << std::endl;
+
+	if((m_Position >= (GetGroundOffset() + CONSTANT("ARM_MIN"))) &&
+	   ((Timer::GetFPGATimestamp() - m_GearIntakeTime) > CONSTANT("INTAKE_TIME")))
+	{
+		printf("Checking watts: %f\r\n", (GetCurrent() * GetVoltage()));
+		if((GetCurrent() * GetVoltage()) > CONSTANT("INTAKE_WATTS"))
+		{
+			SetPosition(CONSTANT("ARM_UP"));
+		}
+	}
 }
 
 void GearIntake::DisabledCalibration()
@@ -83,4 +97,19 @@ void GearIntake::ResetConstants()
 float GearIntake::GetGroundOffset()
 {
 	return m_Ground;
+}
+
+float GearIntake::GetCurrent()
+{
+	return m_MotorIntake->GetOutputCurrent();
+}
+
+float GearIntake::GetVoltage()
+{
+	return m_MotorIntake->GetOutputVoltage();
+}
+
+void GearIntake::SetTime()
+{
+	m_GearIntakeTime = Timer::GetFPGATimestamp();
 }

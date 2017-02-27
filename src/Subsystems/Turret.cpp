@@ -46,7 +46,7 @@ void Turret::Handle()
 
 	position = m_Motor->GetPosition();
 
-	std::cout<<"Position: "<<position<<std::endl;
+	//std::cout<<"Position: "<<position<<std::endl;
 
 	m_Motor->SetSetpoint(m_SetPoint);
 }

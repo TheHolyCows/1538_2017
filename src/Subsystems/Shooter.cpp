@@ -23,6 +23,7 @@ Shooter::Shooter(uint32_t motorA, uint32_t motorB, uint32_t motorFeeder)
 	m_MotorA->SetPID(CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"));
 	m_MotorA->SetSetpoint(0);
 
+
 	m_MotorB = new CANTalon(motorB);
 
 	m_MotorB->SetControlMode(CANTalon::kFollower);
@@ -32,7 +33,14 @@ Shooter::Shooter(uint32_t motorA, uint32_t motorB, uint32_t motorFeeder)
 	m_MotorFeeder = new CANTalon(motorFeeder);
 	m_MotorFeeder->Set(0);
 
+	//m_MotorA->ConfigPeakOutputVoltage(0,-12);
+	//m_MotorB->ConfigPeakOutputVoltage(12,0);
 
+	m_MotorA->ConfigNominalOutputVoltage(CONSTANT("SHOOTER_NOM_A_F"), CONSTANT("SHOOTER_NOM_A_R"));
+	m_MotorA->ConfigPeakOutputVoltage(CONSTANT("SHOOTER_PEAK_A_F"), CONSTANT("SHOOTER_PEAK_A_R"));
+
+	m_MotorB->ConfigNominalOutputVoltage(CONSTANT("SHOOTER_NOM_B_F"), CONSTANT("SHOOTER_NOM_B_R"));
+	m_MotorB->ConfigPeakOutputVoltage(CONSTANT("SHOOTER_PEAK_B_F"), CONSTANT("SHOOTER_PEAK_B_R"));
 }
 
 void Shooter::SetManualSpeed(float speed)
@@ -71,6 +79,10 @@ bool Shooter::IsOnTarget()
 //	{
 //		targeted = true;
 //	}
+	if(abs(m_MotorA->GetSpeed() - m_MotorA->GetSetpoint()) < CONSTANT("SHOOTER_TOLERANCE"))
+	{
+		targeted = true;
+	}
 	return targeted;
 }
 
@@ -102,6 +114,14 @@ void Shooter::ResetConstants()
 //
 //	m_LPF_A->UpdateBeta(CONSTANT("SHOOTER_A_BETA"));
 	m_MotorA->SetPID(CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"));
+
+	m_MotorA->ConfigNominalOutputVoltage(CONSTANT("SHOOTER_NOM_A_F"), CONSTANT("SHOOTER_NOM_A_R"));
+	m_MotorA->ConfigPeakOutputVoltage(CONSTANT("SHOOTER_PEAK_A_F"), CONSTANT("SHOOTER_PEAK_A_R"));
+
+	m_MotorB->ConfigNominalOutputVoltage(CONSTANT("SHOOTER_NOM_B_F"), CONSTANT("SHOOTER_NOM_B_R"));
+	m_MotorB->ConfigPeakOutputVoltage(CONSTANT("SHOOTER_PEAK_B_F"), CONSTANT("SHOOTER_PEAK_B_R"));
+
+
 }
 
 void Shooter::Handle()
@@ -138,7 +158,8 @@ void Shooter::Handle()
 	{
 		m_MotorA->Set(0);
 	}
-
+	SmartDashboard::PutNumber("MotorA Current", m_MotorA->GetOutputCurrent());
+	SmartDashboard::PutNumber("MotorB Current", m_MotorB->GetOutputCurrent());
 	SmartDashboard::PutNumber("Shooter speed", -m_MotorA->GetSpeed());
 }
 

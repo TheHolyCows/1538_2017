@@ -21,6 +21,7 @@ private:
 	CowControlBoard *m_CB;
 	CowLib::CowLatch *m_ShootLatch;
 	CowLib::CowLatch *m_SpoolShooterLatch;
+	CowLib::CowLatch *m_GearIntakeLatch;
 
 	float time;
 	float previousTime;

@@ -6,6 +6,7 @@ OperatorController::OperatorController(CowControlBoard *controlboard)
 {
 	m_ShootLatch = new CowLib::CowLatch();
 	m_SpoolShooterLatch = new CowLib::CowLatch();
+	m_GearIntakeLatch = new CowLib::CowLatch();
 	time = 0;
 }
 
@@ -32,7 +33,8 @@ void OperatorController::handle(CowRobot *bot)
 		bot->GetShooter()->SetAutoSpeed(0);
 	}
 
-	if (m_CB->GetOperatorButton(5))
+	// shoot
+	if (m_CB->GetOperatorButton(5) && bot->GetShooter()->IsOnTarget())
 	{
 		bot->GetShooter()->SetFeederSpeed(-1);
 		bot->GetConveyerUpper()->SetSpeed(-1);
@@ -73,13 +75,15 @@ void OperatorController::handle(CowRobot *bot)
 
 	//bot->GetGearIntake()->SetPosition(CowLib::Deadband(m_CB->GetOperatorGamepadAxis(2), 0.1));
 
-	//
-	if (m_CB->GetOperatorButton(6))
+	// Gear Intake Arm up and down
+	if(m_GearIntakeLatch->Latch(m_CB->GetOperatorButton(6)))
 	{
+		std::cout << "Latch GearIntake" << std::endl;
 		bot->GetGearIntake()->SetPosition(bot->GetGearIntake()->GetGroundOffset());
 	}
-	else
+	else if(!m_CB->GetOperatorButton(6))
 	{
+		m_GearIntakeLatch->ResetLatch();
 		bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
 	}
 
@@ -87,6 +91,7 @@ void OperatorController::handle(CowRobot *bot)
 	if (m_CB->GetOperatorButton(2))
 	{
 		bot->GetGearIntake()->SetSpeed(1);
+		bot->GetGearIntake()->SetTime();
 	}
 	else if (m_CB->GetOperatorButton(3))
 	{

@@ -17,6 +17,7 @@ private:
 	float m_Position;
 	float m_Speed;
 	float m_Ground;
+	float m_GearIntakeTime;
 
 public:
 	GearIntake(uint8_t motorArm, uint8_t motorIntake);
@@ -27,6 +28,9 @@ public:
 	void DisabledCalibration();
 	void ResetConstants();
 	float GetGroundOffset();
+	float GetCurrent();
+	float GetVoltage();
+	void SetTime();
 };
 
 #endif /* SRC_SUBSYSTEMS_GEARINTAKE_H_ */
