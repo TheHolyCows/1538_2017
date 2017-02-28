@@ -20,7 +20,10 @@ Shooter::Shooter(uint32_t motorA, uint32_t motorB, uint32_t motorFeeder)
 	m_MotorA->ConfigEncoderCodesPerRev(360);
 
 	m_MotorA->SetControlMode(CANTalon::kSpeed);
-	m_MotorA->SetPID(CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"));
+	m_MotorA->SetP(CONSTANT("SHOOTER_P"));
+	m_MotorA->SetI(CONSTANT("SHOOTER_I"));
+	m_MotorA->SetD(CONSTANT("SHOOTER_D"));
+	m_MotorA->SetF(CONSTANT("SHOOTER_F"));
 	m_MotorA->SetSetpoint(0);
 
 
@@ -41,6 +44,12 @@ Shooter::Shooter(uint32_t motorA, uint32_t motorB, uint32_t motorFeeder)
 
 	m_MotorB->ConfigNominalOutputVoltage(CONSTANT("SHOOTER_NOM_B_F"), CONSTANT("SHOOTER_NOM_B_R"));
 	m_MotorB->ConfigPeakOutputVoltage(CONSTANT("SHOOTER_PEAK_B_F"), CONSTANT("SHOOTER_PEAK_B_R"));
+
+	m_MotorA->DisableNominalClosedLoopVoltage();
+	m_MotorA->SetNominalClosedLoopVoltage(CONSTANT("SHOOTER_MAX_VLT"));
+
+	m_MotorB->DisableNominalClosedLoopVoltage();
+	m_MotorB->SetNominalClosedLoopVoltage(CONSTANT("SHOOTER_MAX_VLT"));
 }
 
 void Shooter::SetManualSpeed(float speed)
@@ -113,7 +122,10 @@ void Shooter::ResetConstants()
 //	m_PID_A_Rate->UpdateConstants(CONSTANT("SHOOTER_A_P"), CONSTANT("SHOOTER_A_I"), CONSTANT("SHOOTER_A_D"), 0);
 //
 //	m_LPF_A->UpdateBeta(CONSTANT("SHOOTER_A_BETA"));
-	m_MotorA->SetPID(CONSTANT("SHOOTER_P"), CONSTANT("SHOOTER_I"), CONSTANT("SHOOTER_D"), CONSTANT("SHOOTER_F"));
+	m_MotorA->SetP(CONSTANT("SHOOTER_P"));
+	m_MotorA->SetI(CONSTANT("SHOOTER_I"));
+	m_MotorA->SetD(CONSTANT("SHOOTER_D"));
+	m_MotorA->SetF(CONSTANT("SHOOTER_F"));
 
 	m_MotorA->ConfigNominalOutputVoltage(CONSTANT("SHOOTER_NOM_A_F"), CONSTANT("SHOOTER_NOM_A_R"));
 	m_MotorA->ConfigPeakOutputVoltage(CONSTANT("SHOOTER_PEAK_A_F"), CONSTANT("SHOOTER_PEAK_A_R"));
@@ -121,7 +133,11 @@ void Shooter::ResetConstants()
 	m_MotorB->ConfigNominalOutputVoltage(CONSTANT("SHOOTER_NOM_B_F"), CONSTANT("SHOOTER_NOM_B_R"));
 	m_MotorB->ConfigPeakOutputVoltage(CONSTANT("SHOOTER_PEAK_B_F"), CONSTANT("SHOOTER_PEAK_B_R"));
 
+	m_MotorA->DisableNominalClosedLoopVoltage();
+	m_MotorA->SetNominalClosedLoopVoltage(CONSTANT("SHOOTER_MAX_VLT"));
 
+	m_MotorB->DisableNominalClosedLoopVoltage();
+	m_MotorB->SetNominalClosedLoopVoltage(CONSTANT("SHOOTER_MAX_VLT"));
 }
 
 void Shooter::Handle()
