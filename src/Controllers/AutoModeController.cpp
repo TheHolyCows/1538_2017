@@ -33,7 +33,14 @@ void AutoModeController::handle(CowRobot *bot)
 		case CMD_NULL:
 		{
 			doNothing(bot);
-			
+			if(m_CurrentCommand.m_Arm)
+			{
+				bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
+			}
+			else
+			{
+				bot->GetGearIntake()->SetPosition(bot->GetGearIntake()->GetGroundOffset());
+			}
 			result = true;
 			break;
 		}
@@ -41,44 +48,66 @@ void AutoModeController::handle(CowRobot *bot)
 		{
 			bot->DriveWithHeading(m_CurrentCommand.m_Heading, 0);
 			doNothing(bot);
+			if(m_CurrentCommand.m_Arm)
+			{
+				bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
+			}
+			else
+			{
+				bot->GetGearIntake()->SetPosition(bot->GetGearIntake()->GetGroundOffset());
+			}
 			break;
 		}
 		case CMD_TURN:
 		{
 			result = bot->TurnToHeading(m_CurrentCommand.m_Heading);
+			if(m_CurrentCommand.m_Arm)
+			{
+				bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
+			}
+			else
+			{
+				bot->GetGearIntake()->SetPosition(bot->GetGearIntake()->GetGroundOffset());
+			}
 
 			break;
 		}
 		case CMD_HOLD_DISTANCE:
 		{
 			bot->DriveDistanceWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_EncoderCount, m_CurrentCommand.m_Speed);
-
+			if(m_CurrentCommand.m_Arm)
+			{
+				bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
+			}
+			else
+			{
+				bot->GetGearIntake()->SetPosition(bot->GetGearIntake()->GetGroundOffset());
+			}
 			result = false;
 			break;
 		}
 		case CMD_DRIVE_DISTANCE:
 		{
 			result = bot->DriveDistanceWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_EncoderCount,  m_CurrentCommand.m_Speed );
-
+			if(m_CurrentCommand.m_Arm)
+			{
+				bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
+			}
+			else
+			{
+				bot->GetGearIntake()->SetPosition(bot->GetGearIntake()->GetGroundOffset());
+			}
 			break;
 		}
 		case CMD_RESET_DRIVE_ENCODER:
 		{
 			break;
 		}
-		case CMD_ADD_ANGLE_OFFSET:
-		{
-			std::deque<RobotCommand>::iterator iterator = m_CommandList.begin();
-
-			for(; iterator != m_CommandList.end(); ++iterator)
-			{
-				iterator->m_Heading += bot->GetAutoOffsetAngle();
-			}
-			break;
-		}
 		default:
 		{
 			doNothing(bot);
+			bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
+
 			result = true;
 			break;
 		}

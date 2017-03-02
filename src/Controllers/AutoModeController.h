@@ -29,6 +29,7 @@ public:
 	double m_EncoderCount;
 	double m_Heading;
 	double m_Speed;
+	bool m_Arm;
 	double m_Timeout;
 	
 	RobotCommand() :
@@ -36,15 +37,17 @@ public:
 		m_EncoderCount(0),
 		m_Heading(0),
 		m_Speed(0),
+		m_Arm(true),
 		m_Timeout(0)
 	{
 	}
 	
-	RobotCommand(e_RobotCommand cmd, double encoder, double heading, double speed, double timeout) :
+	RobotCommand(e_RobotCommand cmd, double encoder, double heading, double speed, bool arm, double timeout) :
 		m_Command(cmd),
 		m_EncoderCount(encoder),
 		m_Heading(heading),
 		m_Speed(speed),
+		m_Arm(arm),
 		m_Timeout(timeout)
 	{
 	}

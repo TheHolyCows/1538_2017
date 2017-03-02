@@ -12,9 +12,7 @@ OperatorController::OperatorController(CowControlBoard *controlboard)
 
 void OperatorController::handle(CowRobot *bot)
 {
-	bot->DriveSpeedTurn(m_CB->GetDriveStickY(),
-						m_CB->GetSteeringX(),
-						m_CB->GetSteeringButton(FAST_TURN));
+
 
 	// Turn on Shooter
 	if(m_SpoolShooterLatch->Latch(!m_CB->GetOperatorButton(1)))
@@ -45,6 +43,18 @@ void OperatorController::handle(CowRobot *bot)
 		bot->GetShooter()->SetFeederSpeed(0);
 		bot->GetConveyerUpper()->SetSpeed(0);
 		bot->GetConveyerLower()->SetSpeed(0);
+	}
+
+	if(m_CB->GetDriveButton(1))
+	{
+		//bot->TurnToHeading(90);
+		bot->DriveDistanceWithHeading(0, 12, 0.5);
+	}
+	else
+	{
+		bot->DriveSpeedTurn(m_CB->GetDriveStickY(),
+							m_CB->GetSteeringX(),
+							m_CB->GetSteeringButton(FAST_TURN));
 	}
 
 //	// Turn on Conveyer

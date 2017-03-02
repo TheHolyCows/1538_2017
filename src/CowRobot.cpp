@@ -27,9 +27,7 @@ CowRobot::CowRobot()
 	m_RightDriveC->ConfigNeutralMode(CANTalon::NeutralMode::kNeutralMode_Brake);
 
 	m_DriveEncoder = new Encoder(MXP_QEI_5_A, MXP_QEI_5_B, false, Encoder::k1X);
-	m_DriveEncoder->SetDistancePerPulse(0.05235983333333); // 6*pi/360
-
-	m_ShooterEncoder = new Encoder(MXP_QEI_1_A, MXP_QEI_1_B, false, Encoder::k1X);
+	m_DriveEncoder->SetDistancePerPulse(0.03054323611111); // 6*pi/360
 
 	m_MatchTime = 0;
 
@@ -177,7 +175,7 @@ bool CowRobot::DriveDistanceWithHeading(double heading, double distance, double 
 	
 	m_PreviousDriveError = error;
 	
-	return (fabs(error) < 4 && CowLib::UnitsPerSecond(fabs(dError)) < 1 && headingResult);
+	return (fabs(error) < 4 && headingResult);
 }
 
 bool CowRobot::TurnToHeading(double heading)
