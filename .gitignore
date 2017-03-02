@@ -29,6 +29,6 @@
 
 # Eclipse
 /Debug/
-.settings/language.settings.xml
+/.settings/language.settings.xml
 # OS X
 .DS_Store
