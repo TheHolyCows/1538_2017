@@ -12,10 +12,22 @@ OperatorController::OperatorController(CowControlBoard *controlboard)
 
 void OperatorController::handle(CowRobot *bot)
 {
-
+	// Ball intake and exhaust
+	if (m_CB->GetOperatorButton(7))
+	{
+		bot->GetBallIntakeConveyer()->SetSpeed(1);
+	}
+	else if (m_CB->GetOperatorButton(9))
+	{
+		bot->GetBallIntakeConveyer()->SetSpeed(-1);
+	}
+	else
+	{
+		bot->GetBallIntakeConveyer()->SetSpeed(0);
+	}
 
 	// Turn on Shooter
-	if(m_SpoolShooterLatch->Latch(!m_CB->GetOperatorButton(1)))
+	if(m_SpoolShooterLatch->Latch(!m_CB->GetOperatorButton(10)))
 	{
 		std::cout << "Setting state to SPOOL_PID_CONTROL" << std::endl;
 		bot->GetShooter()->SetPIDState(true);
@@ -24,7 +36,7 @@ void OperatorController::handle(CowRobot *bot)
 
 		//bot->GetShooter()->SetManualSpeed();
 	}
-	else if(m_CB->GetOperatorButton(1))
+	else if(m_CB->GetOperatorButton(10))
 	{
 		m_SpoolShooterLatch->ResetLatch();
 		bot->GetShooter()->SetPIDState(false);
@@ -36,8 +48,16 @@ void OperatorController::handle(CowRobot *bot)
 	{
 		bot->GetShooter()->SetFeederSpeed(-1);
 		bot->GetConveyerUpper()->SetSpeed(-1);
-		bot->GetConveyerLower()->SetSpeed(-1);
+		bot->GetConveyerLower()->SetSpeed(-0.75);
+		bot->GetBallIntakeConveyer()->SetSpeed(-1);
 	}
+//	else if (m_CB->GetOperatorButton(8) && bot->GetShooter()->IsOnTarget())
+//	{
+//		bot->GetShooter()->SetFeederSpeed(-1);
+//		bot->GetConveyerUpper()->SetSpeed(-1);
+//		bot->GetConveyerLower()->SetSpeed(-1);
+//		bot->GetBallIntakeConveyer()->SetSpeed(-1);
+//	}
 	else
 	{
 		bot->GetShooter()->SetFeederSpeed(0);
@@ -86,24 +106,25 @@ void OperatorController::handle(CowRobot *bot)
 	//bot->GetGearIntake()->SetPosition(CowLib::Deadband(m_CB->GetOperatorGamepadAxis(2), 0.1));
 
 	// Gear Intake Arm up and down
-	if(m_GearIntakeLatch->Latch(m_CB->GetOperatorButton(6)))
+	if(m_GearIntakeLatch->Latch(!m_CB->GetOperatorButton(8)))
 	{
 		std::cout << "Latch GearIntake" << std::endl;
 		bot->GetGearIntake()->SetPosition(bot->GetGearIntake()->GetGroundOffset());
 	}
-	else if(!m_CB->GetOperatorButton(6))
+	else if(m_CB->GetOperatorButton(8))
 	{
 		m_GearIntakeLatch->ResetLatch();
 		bot->GetGearIntake()->SetPosition(CONSTANT("ARM_UP"));
 	}
 
 	// Gear intake and exhaust
-	if (m_CB->GetOperatorButton(2))
+	if (m_CB->GetOperatorButton(4))
 	{
 		bot->GetGearIntake()->SetSpeed(1);
-		bot->GetGearIntake()->SetTime();
+		//bot->GetGearIntake()->IntakeAfterRaise();
+		//bot->GetGearIntake()->SetTime();
 	}
-	else if (m_CB->GetOperatorButton(3))
+	else if (m_CB->GetOperatorButton(6))
 	{
 		bot->GetGearIntake()->SetSpeed(-1);
 	}
@@ -112,18 +133,6 @@ void OperatorController::handle(CowRobot *bot)
 		bot->GetGearIntake()->SetSpeed(0);
 	}
 
-	// Ball intake and exhaust
-	if (m_CB->GetOperatorButton(4))
-	{
-		bot->GetBallIntakeConveyer()->SetSpeed(1);
-	}
-	else if (m_CB->GetOperatorButton(7))
-	{
-		bot->GetBallIntakeConveyer()->SetSpeed(-1);
-	}
-	else
-	{
-		bot->GetBallIntakeConveyer()->SetSpeed(0);
-	}
+
 }
 

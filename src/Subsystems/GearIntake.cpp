@@ -15,7 +15,9 @@ GearIntake::GearIntake(uint8_t motorArm, uint8_t motorIntake) :
 	m_Speed(0),
 	m_Position(0),
 	m_Ground(0),
-	m_GearIntakeTime(0)
+	m_GearIntakeTime(0),
+	m_IntakeAfterRaise(false),
+	m_IntakeAfterRaiseTime(0)
 {
 	m_MotorArm = new CANTalon(motorArm);
 	m_MotorArm->SetSensorDirection(true);
@@ -25,6 +27,8 @@ GearIntake::GearIntake(uint8_t motorArm, uint8_t motorIntake) :
 	m_MotorArm->SetVoltageRampRate(CONSTANT("ARM_VOLT_RAMP"));
 	//m_MotorArm->SetCloseLoopRampRate(CONSTANT("ARM_VOLT_RAMP"));
 	m_MotorArm->SetPID(CONSTANT("ARM_P"), CONSTANT("ARM_I"), CONSTANT("ARM_D"), 0);
+
+	m_TimeLatch = new CowLib::CowLatch();
 }
 
 GearIntake::~GearIntake() {
@@ -33,6 +37,19 @@ GearIntake::~GearIntake() {
 
 void GearIntake::SetPosition(float position)
 {
+	if(m_TimeLatch->Latch((position == CONSTANT("ARM_UP"))))
+	{
+		if(m_IntakeAfterRaise)
+		{
+			m_IntakeAfterRaiseTime = Timer::GetFPGATimestamp();
+			printf("Setting Time Latch\r\n");
+		}
+	}
+	else if(position != CONSTANT("ARM_UP"))
+	{
+		m_TimeLatch->ResetLatch();
+	}
+
 	// red goes up
 	// green goes down
 	float newPosition = position + m_Ground;
@@ -57,7 +74,22 @@ void GearIntake::SetSpeed(float speed)
 
 void GearIntake::Handle()
 {
-	m_MotorIntake->Set(m_Speed);
+	float intakeSpeed = m_Speed;
+	float intakeTime = (Timer::GetFPGATimestamp() - m_IntakeAfterRaiseTime);
+
+	if(m_IntakeAfterRaise)
+	{
+		if(intakeTime < CONSTANT("INTAKE_BLIP_TIME"))
+		{
+			intakeSpeed = 1;
+		}
+		else
+		{
+			m_IntakeAfterRaise = false;
+		}
+	}
+
+	m_MotorIntake->Set(intakeSpeed);
 	m_MotorArm->SetSetpoint(m_Position);
 
 	//m_MotorArm->Set(m_Position);
@@ -112,4 +144,9 @@ float GearIntake::GetVoltage()
 void GearIntake::SetTime()
 {
 	m_GearIntakeTime = Timer::GetFPGATimestamp();
+}
+
+void GearIntake::IntakeAfterRaise()
+{
+	m_IntakeAfterRaise = true;
 }

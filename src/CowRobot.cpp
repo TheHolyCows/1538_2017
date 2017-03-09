@@ -68,6 +68,12 @@ void CowRobot::Reset()
 	m_RightDriveValue = 0;
 	m_MatchTime = 0;
 
+	GetShooter()->SetPIDState(false);
+	GetShooter()->SetFeederSpeed(0);
+	GetConveyerUpper()->SetSpeed(0);
+	GetConveyerLower()->SetSpeed(0);
+	GetBallIntakeConveyer()->SetSpeed(0);
+
 }
 
 void CowRobot::SetController(GenericController *controller)
@@ -133,6 +139,7 @@ void CowRobot::handle()
 //				  << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
 
 	}
+	SmartDashboard::PutNumber("Drive distance", GetDriveDistance());
 
 	m_DSUpdateCount++;
 }

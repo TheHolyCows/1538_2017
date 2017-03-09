@@ -99,8 +99,21 @@ void AutoModeController::handle(CowRobot *bot)
 			}
 			break;
 		}
-		case CMD_RESET_DRIVE_ENCODER:
+		case CMD_SHOOT:
 		{
+			result = false;
+			bot->GetShooter()->SetFeederSpeed(-1);
+			bot->GetConveyerUpper()->SetSpeed(-1);
+			bot->GetConveyerLower()->SetSpeed(-0.75);
+			bot->GetBallIntakeConveyer()->SetSpeed(-1);
+			break;
+		}
+		case CMD_SPOOL_SHOOTER:
+		{
+			result = true;
+			std::cout << "Setting state to SPOOL_PID_CONTROL" << std::endl;
+			bot->GetShooter()->SetPIDState(true);
+			bot->GetShooter()->SetAutoSpeed(CONSTANT("SHOOTER_RPM"));
 			break;
 		}
 		default:

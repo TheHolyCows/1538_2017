@@ -9,6 +9,8 @@
 #define SRC_SUBSYSTEMS_GEARINTAKE_H_
 
 #include "CANTalon.h"
+#include "../CowLib/CowLatch.h"
+
 
 class GearIntake {
 private:
@@ -18,6 +20,10 @@ private:
 	float m_Speed;
 	float m_Ground;
 	float m_GearIntakeTime;
+	bool m_IntakeAfterRaise;
+	float m_IntakeAfterRaiseTime;
+	CowLib::CowLatch *m_TimeLatch;
+
 
 public:
 	GearIntake(uint8_t motorArm, uint8_t motorIntake);
@@ -30,6 +36,7 @@ public:
 	float GetGroundOffset();
 	float GetCurrent();
 	float GetVoltage();
+	void IntakeAfterRaise();
 	void SetTime();
 };
 
