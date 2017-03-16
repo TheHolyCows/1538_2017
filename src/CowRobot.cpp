@@ -18,6 +18,7 @@ CowRobot::CowRobot()
 	m_RightDriveA = new CANTalon(14);
 	m_RightDriveB = new CANTalon(15);
 	m_RightDriveC = new CANTalon(16);
+	m_Climber = new CANTalon(1);
 
 	m_LeftDriveA->ConfigNeutralMode(CANTalon::NeutralMode::kNeutralMode_Brake);
 	m_LeftDriveB->ConfigNeutralMode(CANTalon::NeutralMode::kNeutralMode_Brake);

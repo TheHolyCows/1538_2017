@@ -77,17 +77,17 @@ void GearIntake::Handle()
 	float intakeSpeed = m_Speed;
 	float intakeTime = (Timer::GetFPGATimestamp() - m_IntakeAfterRaiseTime);
 
-	if(m_IntakeAfterRaise)
-	{
-		if(intakeTime < CONSTANT("INTAKE_BLIP_TIME"))
-		{
-			intakeSpeed = 1;
-		}
-		else
-		{
-			m_IntakeAfterRaise = false;
-		}
-	}
+//	if(m_IntakeAfterRaise)
+//	{
+//		if(intakeTime < CONSTANT("INTAKE_BLIP_TIME"))
+//		{
+//			intakeSpeed = 1;
+//		}
+//		else
+//		{
+//			m_IntakeAfterRaise = false;
+//		}
+//	}
 
 	m_MotorIntake->Set(intakeSpeed);
 	m_MotorArm->SetSetpoint(m_Position);
@@ -98,15 +98,15 @@ void GearIntake::Handle()
 	//double watts = m_MotorIntake->GetOutputCurrent()  * m_MotorIntake->GetOutputVoltage();
 	//std::cout << "GearIntake watts:" << watts << std::endl;
 
-	if((m_Position >= (GetGroundOffset() + CONSTANT("ARM_MIN"))) &&
-	   ((Timer::GetFPGATimestamp() - m_GearIntakeTime) > CONSTANT("INTAKE_TIME")))
-	{
-		printf("Checking watts: %f\r\n", (GetCurrent() * GetVoltage()));
-		if((GetCurrent() * GetVoltage()) > CONSTANT("INTAKE_WATTS"))
-		{
-			SetPosition(CONSTANT("ARM_UP"));
-		}
-	}
+//	if((m_Position >= (GetGroundOffset() + CONSTANT("ARM_MIN"))) &&
+//	   ((Timer::GetFPGATimestamp() - m_GearIntakeTime) > CONSTANT("INTAKE_TIME")))
+//	{
+//		printf("Checking watts: %f\r\n", (GetCurrent() * GetVoltage()));
+//		if((GetCurrent() * GetVoltage()) > CONSTANT("INTAKE_WATTS"))
+//		{
+//			SetPosition(CONSTANT("ARM_UP"));
+//		}
+//	}
 }
 
 void GearIntake::DisabledCalibration()

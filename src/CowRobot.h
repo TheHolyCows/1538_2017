@@ -38,6 +38,7 @@ private:
 	CANTalon *m_RightDriveA;
 	CANTalon *m_RightDriveB;
 	CANTalon *m_RightDriveC;
+	CANTalon *m_Climber;
 	
 	CowLib::CowGyro *m_Gyro;
 	Encoder *m_DriveEncoder;
@@ -102,6 +103,11 @@ public:
 	CowLib::CowGyro *GetGyro()
 	{
 		return CowLib::CowGyro::GetInstance();
+	}
+
+	CANTalon *GetClimber()
+	{
+		return m_Climber;
 	}
 
 	Encoder *GetEncoder()

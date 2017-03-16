@@ -12,12 +12,21 @@ OperatorController::OperatorController(CowControlBoard *controlboard)
 
 void OperatorController::handle(CowRobot *bot)
 {
+	if(m_CB->GetOperatorButton(3))
+	{
+		bot->GetClimber()->Set(1);
+	}
+	else
+	{
+		bot->GetClimber()->Set(0);
+	}
 	// Ball intake and exhaust
-	if (m_CB->GetOperatorButton(7))
+	//Exhaust
+	if (m_CB->GetOperatorButton(9))
 	{
 		bot->GetBallIntakeConveyer()->SetSpeed(1);
 	}
-	else if (m_CB->GetOperatorButton(9))
+	else if (m_CB->GetOperatorButton(7))
 	{
 		bot->GetBallIntakeConveyer()->SetSpeed(-1);
 	}
