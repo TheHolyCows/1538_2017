@@ -1,12 +1,12 @@
 /*
- * CowLight.h
+ * Light.h
  *
  *  Created on: Mar 21, 2017
  *      Author: hchau
  */
 
-#ifndef SRC_SUBSYSTEMS_COWLIGHT_H_
-#define SRC_SUBSYSTEMS_COWLIGHT_H_
+#ifndef SRC_SUBSYSTEMS_LIGHT_H_
+#define SRC_SUBSYSTEMS_LIGHT_H_
 
 #include <WPILib.h>
 
@@ -17,15 +17,16 @@ typedef enum
 	LIGHT_ON,
 } e_Light_State;
 
-class CowLight {
+class Light {
 public:
-	CowLight(Solenoid *solenoid);
-	virtual ~CowLight();
+	Light(Solenoid *solenoid);
+	virtual ~Light();
 
 private:
 	Solenoid *m_Solenoid;
 	e_Light_State m_State;
 	bool m_IsLightOn;
+	int m_StrobeCount;
 
 public:
 	void Handle();
@@ -35,4 +36,4 @@ public:
 	void SetLightOff();
 };
 
-#endif /* SRC_SUBSYSTEMS_COWLIGHT_H_ */
+#endif /* SRC_SUBSYSTEMS_LIGHT_H_ */

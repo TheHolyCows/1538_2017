@@ -44,7 +44,7 @@ CowRobot::CowRobot()
 	m_GearIntake = new GearIntake(5, 10);
 
 	m_LightSolenoid = new Solenoid(0);
-	m_CowLight = new CowLight(m_LightSolenoid);
+	m_Light = new Light(m_LightSolenoid);
 
 	m_Pixy = Pixy::GetInstance();
 
@@ -128,7 +128,7 @@ void CowRobot::handle()
 	m_Turret->Handle();
 	m_GearIntake->Handle();
 	m_BallIntakeConveyer->Handle();
-	m_CowLight->Handle();
+	m_Light->Handle();
 
 	if(m_DSUpdateCount % 10 == 0)
 	{

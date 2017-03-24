@@ -142,6 +142,14 @@ void OperatorController::handle(CowRobot *bot)
 		bot->GetGearIntake()->SetSpeed(0);
 	}
 
-
+	// Light
+	if (m_CB->GetSteeringButton(3) || m_CB->GetOperatorButton(3))
+	{
+		bot->GetLight()->SetLightStrobe();
+	}
+	else if (!m_CB->GetSteeringButton(3) && !m_CB->GetOperatorButton(3))
+	{
+		bot->GetLight()->SetLightOff();
+	}
 }
 

@@ -10,6 +10,7 @@
 #include <CANTalon.h>
 #include <CowLib/CowPixy.h>
 #include <Subsystems/Conveyer.h>
+#include <Subsystems/Light.h>
 #include "Controllers/GenericController.h"
 #include "CowLib/CowLib.h"
 #include "CowControlBoard.h"
@@ -21,7 +22,6 @@
 #include "Subsystems/Conveyer.h"
 #include "Subsystems/Turret.h"
 #include "Subsystems/GearIntake.h"
-#include "Subsystems/CowLight.h"
 
 class CowRobot
 {
@@ -52,7 +52,7 @@ private:
 	Turret *m_Turret;
 
 	Solenoid *m_LightSolenoid;
-	CowLight *m_CowLight;
+	Light *m_Light;
 
 	GearIntake *m_GearIntake;
 
@@ -154,9 +154,9 @@ public:
 		return Pixy::GetInstance();
 	}
 
-	CowLight *GetCowLight()
+	Light *GetLight()
 	{
-		return m_CowLight;
+		return m_Light;
 	}
 
 	void AddAutoOffsetAngle()
