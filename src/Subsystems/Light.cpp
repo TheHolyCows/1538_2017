@@ -13,7 +13,8 @@ Light::Light(Solenoid *solenoid) :
 	m_IsLightOn(false),
 	m_Solenoid(solenoid),
 	m_StrobeCount(0),
-	m_Override(false)
+	m_Override(false),
+	m_StrobeRate(2)
 {
 	// TODO Auto-generated constructor stub
 
@@ -31,6 +32,11 @@ void Light::SetState(e_Light_State state)
 void Light::SetLightStrobe()
 {
 	SetState(LIGHT_STROBE);
+}
+
+void Light::SetStrobeRate(int strobeRate)
+{
+	m_StrobeRate = strobeRate;
 }
 
 void Light::SetLightStrobeOverride()
@@ -73,7 +79,7 @@ void Light::Handle()
 		{
 			m_StrobeCount++;
 
-			if (m_StrobeCount == 2)
+			if (m_StrobeCount >= m_StrobeRate)
 			{
 				m_StrobeCount = 0;
 			}

@@ -148,9 +148,11 @@ void CowRobot::handle()
 
 	std::cout << "start time: " << m_StartTime << " match time: " << m_MatchTime << std::endl;
 
-	if ((m_MatchTime > 125) && (m_MatchTime < 135))
+	if ((m_MatchTime > 120) && (m_MatchTime < 135))
 	{
+		int timeLeft = 135 - m_MatchTime;
 		m_Light->SetLightStrobeOverride();
+		m_Light->SetStrobeRate(timeLeft + 1);
 	}
 	else if ((m_MatchTime > 105) && (m_MatchTime < 110))
 	{
