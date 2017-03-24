@@ -43,6 +43,9 @@ CowRobot::CowRobot()
 	m_Turret = new Turret(6);
 	m_GearIntake = new GearIntake(5, 10);
 
+	m_LightSolenoid = new Solenoid(0);
+	m_CowLight = new CowLight(m_LightSolenoid);
+
 	m_Pixy = Pixy::GetInstance();
 
 	//m_Gyro->Reset();
@@ -125,6 +128,7 @@ void CowRobot::handle()
 	m_Turret->Handle();
 	m_GearIntake->Handle();
 	m_BallIntakeConveyer->Handle();
+	m_CowLight->Handle();
 
 	if(m_DSUpdateCount % 10 == 0)
 	{

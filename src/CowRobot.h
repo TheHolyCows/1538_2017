@@ -21,6 +21,7 @@
 #include "Subsystems/Conveyer.h"
 #include "Subsystems/Turret.h"
 #include "Subsystems/GearIntake.h"
+#include "Subsystems/CowLight.h"
 
 class CowRobot
 {
@@ -49,6 +50,9 @@ private:
 	Conveyer *m_ConveyerLower;
 	Conveyer *m_BallIntakeConveyer;
 	Turret *m_Turret;
+
+	Solenoid *m_LightSolenoid;
+	CowLight *m_CowLight;
 
 	GearIntake *m_GearIntake;
 
@@ -148,6 +152,11 @@ public:
 	Pixy *GetPixy()
 	{
 		return Pixy::GetInstance();
+	}
+
+	CowLight *GetCowLight()
+	{
+		return m_CowLight;
 	}
 
 	void AddAutoOffsetAngle()
