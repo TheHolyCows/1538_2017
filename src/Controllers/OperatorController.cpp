@@ -143,11 +143,19 @@ void OperatorController::handle(CowRobot *bot)
 	}
 
 	// Light
-	if (m_CB->GetSteeringButton(3) || m_CB->GetOperatorButton(3))
+	if (m_CB->GetSteeringButton(1) ||
+		m_CB->GetSteeringButton(2) ||
+		m_CB->GetSteeringButton(3) ||
+		m_CB->GetSteeringButton(4) ||
+		m_CB->GetOperatorButton(3))
 	{
 		bot->GetLight()->SetLightStrobe();
 	}
-	else if (!m_CB->GetSteeringButton(3) && !m_CB->GetOperatorButton(3))
+	else if (!m_CB->GetSteeringButton(1) &&
+			 !m_CB->GetSteeringButton(2) &&
+			 !m_CB->GetSteeringButton(3) &&
+			 !m_CB->GetSteeringButton(4) &&
+			 !m_CB->GetOperatorButton(3))
 	{
 		bot->GetLight()->SetLightOff();
 	}
