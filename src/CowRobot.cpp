@@ -105,6 +105,7 @@ void CowRobot::PrintToDS()
 /// Please call this once per update cycle.
 void CowRobot::handle()
 {	
+	m_MatchTime = Timer::GetFPGATimestamp() - m_StartTime;
 
 	if(m_Controller == NULL)
 	{
@@ -144,6 +145,22 @@ void CowRobot::handle()
 //				  << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
 
 	}
+
+	std::cout << "start time: " << m_StartTime << " match time: " << m_MatchTime << std::endl;
+
+	if ((m_MatchTime > 125) && (m_MatchTime < 135))
+	{
+		m_Light->SetLightStrobeOverride();
+	}
+	else if ((m_MatchTime > 105) && (m_MatchTime < 110))
+	{
+		m_Light->SetLightStrobeOverride();
+	}
+	else
+	{
+		m_Light->SetLightOffOverride();
+	}
+
 	SmartDashboard::PutNumber("Drive distance", GetDriveDistance());
 
 	m_DSUpdateCount++;
@@ -335,6 +352,6 @@ void CowRobot::SetRightMotors(float val)
 
 void CowRobot::StartTime()
 {
-	m_MatchTime = Timer::GetFPGATimestamp();
+	m_StartTime = Timer::GetFPGATimestamp();
 }
 

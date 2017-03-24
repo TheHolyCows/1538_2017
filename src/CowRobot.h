@@ -70,6 +70,7 @@ private:
 	double m_PreviousDriveError;
 
 	double m_MatchTime;
+	double m_StartTime;
 	float m_AutoOffsetAngle;
 
 	void SetLeftMotors(float val);

@@ -27,13 +27,16 @@ private:
 	e_Light_State m_State;
 	bool m_IsLightOn;
 	int m_StrobeCount;
+	bool m_Override;
 
 public:
 	void Handle();
 	void SetState(e_Light_State state);
 	void SetLightStrobe();
 	void SetLightOn();
+	void SetLightStrobeOverride();
 	void SetLightOff();
+	void SetLightOffOverride();
 };
 
 #endif /* SRC_SUBSYSTEMS_LIGHT_H_ */

@@ -12,7 +12,8 @@ Light::Light(Solenoid *solenoid) :
 	m_State(LIGHT_OFF),
 	m_IsLightOn(false),
 	m_Solenoid(solenoid),
-	m_StrobeCount(0)
+	m_StrobeCount(0),
+	m_Override(false)
 {
 	// TODO Auto-generated constructor stub
 
@@ -32,6 +33,12 @@ void Light::SetLightStrobe()
 	SetState(LIGHT_STROBE);
 }
 
+void Light::SetLightStrobeOverride()
+{
+	m_Override = true;
+	SetLightStrobe();
+}
+
 void Light::SetLightOn()
 {
 	SetState(LIGHT_ON);
@@ -39,7 +46,16 @@ void Light::SetLightOn()
 
 void Light::SetLightOff()
 {
-	SetState(LIGHT_OFF);
+	if (!m_Override)
+	{
+		SetState(LIGHT_OFF);
+	}
+}
+
+void Light::SetLightOffOverride()
+{
+	m_Override = false;
+	SetLightOff();
 }
 
 void Light::Handle()
