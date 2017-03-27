@@ -102,10 +102,27 @@ void AutoModeController::handle(CowRobot *bot)
 		case CMD_SHOOT:
 		{
 			result = false;
+			bot->DriveDistanceWithHeading(m_CurrentCommand.m_Heading, m_CurrentCommand.m_EncoderCount, m_CurrentCommand.m_Speed);
 			bot->GetShooter()->SetFeederSpeed(-1);
 			bot->GetConveyerUpper()->SetSpeed(-1);
 			bot->GetConveyerLower()->SetSpeed(-0.75);
 			bot->GetBallIntakeConveyer()->SetSpeed(-1);
+			break;
+		}
+		case CMD_LEFT_ENCODER:
+		{
+			std::cout << "Using the left encoder" << std::endl;
+
+			bot->UseLeftEncoder();
+			bot->ResetEncoders();
+			break;
+		}
+		case CMD_RIGHT_ENCODER:
+		{
+			std::cout << "Using the right encoder" << std::endl;
+
+			bot->UseRightEncoder();
+			bot->ResetEncoders();
 			break;
 		}
 		case CMD_SPOOL_SHOOTER:
@@ -114,6 +131,7 @@ void AutoModeController::handle(CowRobot *bot)
 			std::cout << "Setting state to SPOOL_PID_CONTROL" << std::endl;
 			bot->GetShooter()->SetPIDState(true);
 			bot->GetShooter()->SetAutoSpeed(CONSTANT("SHOOTER_RPM"));
+			bot->GetTurret()->SetAutoTurret(true);
 			break;
 		}
 		default:
@@ -134,7 +152,7 @@ void AutoModeController::handle(CowRobot *bot)
 		{
 			if(m_CurrentCommand.m_Command == CMD_TURN)
 			{
-				bot->GetEncoder()->Reset();
+				bot->ResetEncoders();
 			}
 			m_CurrentCommand = m_CommandList.front();
 			m_CommandList.pop_front();

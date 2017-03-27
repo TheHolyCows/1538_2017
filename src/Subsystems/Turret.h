@@ -11,26 +11,36 @@
 #include <WPILib.h>
 #include <CANTalon.h>
 #include "../CowLib/CowPID.h"
+#include "../CowLib/CowLPF.h"
 
 class Turret {
 private:
 	CANTalon* m_Motor;
+	Solenoid *m_PixySolenoid;
+
 	float m_Speed;
 	float m_PositionMax;
 	float m_PositionMin;
 	float m_SetPoint;
+	bool m_OperatorOverride;
 
-	const uint32_t CENTER_X = 319 / 2;	// width ranges from 0 to 319
-	const uint32_t CENTER_Y = 199 / 2;	// height ranges from 0 to 199
+	double m_PixyCenterX;
+	double m_PixyScaleFactor;
+	CowLib::CowLPF *m_Lpf;
+	bool m_AutoTurret;
+	//const uint32_t CENTER_X = 319 / 2;	// width ranges from 0 to 319
+	//const uint32_t CENTER_Y = 199 / 2;	// height ranges from 0 to 199
 
 public:
 	Turret(uint8_t motor);
 	virtual ~Turret();
+	void SetAutoTurret(bool turret);
 	void Handle();
 	void SetSpeed(float speed);
 	void ResetConstants();
 	void SetSetPoint(float sp);
 	float GetSetPoint();
+	void SetTurretOperatorOverride(bool override);
 };
 
 #endif /* SRC_SUBSYSTEMS_TURRET_H_ */

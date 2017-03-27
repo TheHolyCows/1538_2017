@@ -6,14 +6,19 @@
  */
 
 #include <CowLib/CowPixy.h>
+#include <CowLib/CowLpf.h>
+#include "../CowConstants.h"
 
 Pixy *Pixy::m_Instance         = NULL;
 SerialPort *Pixy::m_SerialPort = NULL;
+AnalogInput *Pixy::m_Analog = NULL;
 char Pixy::m_Buf[1024];
 Pixy::PixyPacket Pixy::m_Packet;
+bool Pixy::m_IsValidPacket = true;
 
 Pixy::Pixy()
 {
+	m_Analog = new AnalogInput(0);
 	m_SerialPort = new SerialPort(9600,
 								  SerialPort::kMXP);
 
@@ -29,6 +34,9 @@ Pixy::~Pixy()
 
 void Pixy::DoRead()
 {
+	//std::cout << "Analog: " << m_Analog->GetAverageVoltage() << std::endl;
+	m_Packet.analog = m_Analog->GetAverageVoltage();
+	/*
 	uint32_t readCount = m_SerialPort->Read(m_Buf, 1024);
 
 	if(readCount > 0)
@@ -44,6 +52,7 @@ void Pixy::DoRead()
 				uint16_t syncWord2 = Convert(m_Buf[i - 2], m_Buf[i - 3]);
 				if(SYNCWORD != syncWord2)
 				{
+					m_IsValidPacket = false;
 					continue;
 				}
 
@@ -62,6 +71,7 @@ void Pixy::DoRead()
 //				}
 //				std::cout << std::endl;
 
+				m_IsValidPacket = true;
 				uint16_t checksum = Convert(m_Buf[i + 2], m_Buf[i + 1]);
 				uint16_t signature = Convert(m_Buf[i + 4], m_Buf[i + 3]);
 				m_Packet.x      = Convert(m_Buf[i + 6], m_Buf[i + 5]);
@@ -88,10 +98,18 @@ void Pixy::DoRead()
 				SmartDashboard::PutNumber("height", m_Packet.height);
 				break;
 			}
+			else
+			{
+				m_IsValidPacket = true;
+			}
+		}
+		{
+			m_IsValidPacket = true;
 		}
 		memset(m_Buf, 0, 1024);
+		*/
 
-	}
+	//}
 }
 
 void Pixy::Handle()
@@ -124,4 +142,9 @@ uint16_t Pixy::Convert(char upper, char lower)
 Pixy::PixyPacket Pixy::GetPacket()
 {
 	return m_Packet;
+}
+
+bool Pixy::GetPixyPacketValidity()
+{
+	return m_IsValidPacket;
 }

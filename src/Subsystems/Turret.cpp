@@ -16,22 +16,34 @@ Turret::Turret(uint8_t motor)
 	m_Speed(0),
 	m_PositionMax(CONSTANT("TURRET_POSITION_MAX")),
 	m_PositionMin(CONSTANT("TURRET_POSITION_MIN")),
-	m_SetPoint(0)
+	m_SetPoint(0),
+	m_OperatorOverride(false),
+	m_PixyCenterX(CONSTANT("PIXY_CENTER_X")),
+	m_PixyScaleFactor(CONSTANT("PIXY_SCALE_FACTOR"))
 {
 	m_Motor = new CANTalon(motor);
 	m_Motor->SetControlMode(CANTalon::kPosition);
 	m_Motor->SetPID(CONSTANT("TURRET_P"), CONSTANT("TURRET_I"), CONSTANT("TURRET_D"), 0);
 	m_Motor->SetSetpoint(0);
+	m_Lpf = new CowLib::CowLPF(CONSTANT("PIXY_LPF"));
+	m_PixySolenoid = new Solenoid(3);
 }
 
 Turret::~Turret() {
 
 }
 
+void Turret::SetAutoTurret(bool turret)
+{
+	m_AutoTurret = turret;
+}
+
 void Turret::Handle()
 {
 	double position;
-	//Pixy::PixyPacket packet = Pixy::GetInstance()->GetPacket();
+
+	Pixy::PixyPacket packet = Pixy::GetInstance()->GetPacket();
+	double x_pos = m_Lpf->Calculate(packet.analog);
 
 //	m_Speed = m_PID->Calculate(packet.x);
 //
@@ -40,15 +52,48 @@ void Turret::Handle()
 //		m_PID->ResetIntegrator();
 //	}
 
+	// pixy 0, turret position is -80000
+	// pixy 319, turret position is 80000
+	// center is 159.5, poisition is 0
+	if(m_OperatorOverride)
+	{
+		m_Motor->SetSetpoint(m_SetPoint);
+	}
+	else if(Pixy::GetPixyPacketValidity())
+	{
+		// Suppose turret is at position 40000, need to move -40000 left
+		// packet.x is going to return a value around 239
+		// center is 159.5
+		// position = (159.5 - 239) * 500 = -39750
+		// turret at -40000, packet.x is at 79, ( 159.5 - 79) * 500 = ...
+
+		position = (CONSTANT("PIXY_CENTER_X") - x_pos);
+		std::cout<<"Position: "<<position<<std::endl;
+		SetSetPoint(m_SetPoint + (position * CONSTANT("PIXY_SCALE_FACTOR")));
+
+		if(m_AutoTurret)
+		{
+			m_Motor->SetSetpoint(m_SetPoint);
+			m_PixySolenoid->Set(true);
+		}
+		else
+		{
+			m_Motor->SetSetpoint(0);
+			m_PixySolenoid->Set(false);
+		}
+	}
+//	else if(!Pixy::GetPixyPacketValidity())
+//	{
+//		//m_Motor->Set(0);
+//	}
 	//m_Motor->Set(m_Speed);
 
 	//m_Motor->Set
 
-	position = m_Motor->GetPosition();
+	//position = m_Motor->GetPosition();
 
 	//std::cout<<"Position: "<<position<<std::endl;
 
-	m_Motor->SetSetpoint(m_SetPoint);
 }
 
 void Turret::SetSetPoint(float sp)
@@ -80,4 +125,10 @@ void Turret::SetSpeed(float speed)
 void Turret::ResetConstants()
 {
 	m_Motor->SetPID(CONSTANT("TURRET_P"), CONSTANT("TURRET_I"), CONSTANT("TURRET_D"), 0);
+	m_Lpf->UpdateBeta(CONSTANT("PIXY_LPF"));
+}
+
+void Turret::SetTurretOperatorOverride(bool override)
+{
+	m_OperatorOverride = override;
 }

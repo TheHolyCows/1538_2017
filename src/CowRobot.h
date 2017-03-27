@@ -43,6 +43,9 @@ private:
 	
 	CowLib::CowGyro *m_Gyro;
 	Encoder *m_DriveEncoder;
+	Encoder *m_DriveEncoderLeft;
+	Encoder *m_DriveEncoderRight;
+
 	Encoder *m_ShooterEncoder;
 
 	Shooter *m_Shooter;
@@ -158,6 +161,22 @@ public:
 	Light *GetLight()
 	{
 		return m_Light;
+	}
+
+	void UseLeftEncoder()
+	{
+		m_DriveEncoder = m_DriveEncoderLeft;
+	}
+
+	void UseRightEncoder()
+	{
+		m_DriveEncoder = m_DriveEncoderRight;
+	}
+
+	void ResetEncoders()
+	{
+		m_DriveEncoderLeft->Reset();
+		m_DriveEncoderRight->Reset();
 	}
 
 	void AddAutoOffsetAngle()

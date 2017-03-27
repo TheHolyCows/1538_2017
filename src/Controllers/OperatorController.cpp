@@ -42,7 +42,7 @@ void OperatorController::handle(CowRobot *bot)
 		bot->GetShooter()->SetPIDState(true);
 //		// start shooter
 		bot->GetShooter()->SetAutoSpeed(CONSTANT("SHOOTER_RPM"));
-
+		bot->GetTurret()->SetAutoTurret(true);
 		//bot->GetShooter()->SetManualSpeed();
 	}
 	else if(m_CB->GetOperatorButton(10))
@@ -50,6 +50,7 @@ void OperatorController::handle(CowRobot *bot)
 		m_SpoolShooterLatch->ResetLatch();
 		bot->GetShooter()->SetPIDState(false);
 		bot->GetShooter()->SetAutoSpeed(0);
+		bot->GetTurret()->SetAutoTurret(false);
 	}
 
 	// shoot
@@ -109,8 +110,8 @@ void OperatorController::handle(CowRobot *bot)
 
 	float newSetPoint;
 
-	newSetPoint = bot->GetTurret()->GetSetPoint() + (CowLib::Deadband(m_CB->GetOperatorGamepadAxis(0), 0.1) * 2000);
-	bot->GetTurret()->SetSetPoint(newSetPoint);
+//	newSetPoint = bot->GetTurret()->GetSetPoint() + (CowLib::Deadband(m_CB->GetOperatorGamepadAxis(0), 0.1) * 2000);
+//	bot->GetTurret()->SetSetPoint(newSetPoint);
 
 	//bot->GetGearIntake()->SetPosition(CowLib::Deadband(m_CB->GetOperatorGamepadAxis(2), 0.1));
 
@@ -129,13 +130,13 @@ void OperatorController::handle(CowRobot *bot)
 	// Gear intake and exhaust
 	if (m_CB->GetOperatorButton(4))
 	{
-		bot->GetGearIntake()->SetSpeed(1);
+		bot->GetGearIntake()->SetSpeed(CONSTANT("GEAR_INTAKE_SPEED"));
 		//bot->GetGearIntake()->IntakeAfterRaise();
 		//bot->GetGearIntake()->SetTime();
 	}
 	else if (m_CB->GetOperatorButton(6))
 	{
-		bot->GetGearIntake()->SetSpeed(-1);
+		bot->GetGearIntake()->SetSpeed(CONSTANT("GEAR_EXHAUST_SPEED"));
 	}
 	else
 	{

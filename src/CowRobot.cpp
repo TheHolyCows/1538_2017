@@ -27,8 +27,14 @@ CowRobot::CowRobot()
 	m_RightDriveB->ConfigNeutralMode(CANTalon::NeutralMode::kNeutralMode_Brake);
 	m_RightDriveC->ConfigNeutralMode(CANTalon::NeutralMode::kNeutralMode_Brake);
 
-	m_DriveEncoder = new Encoder(MXP_QEI_5_A, MXP_QEI_5_B, false, Encoder::k1X);
-	m_DriveEncoder->SetDistancePerPulse(0.03054323611111); // 6*pi/360
+	m_DriveEncoderRight = new Encoder(MXP_QEI_5_A, MXP_QEI_5_B, false, Encoder::k1X);
+	m_DriveEncoderRight->SetDistancePerPulse(0.03054323611111); // 6*pi/360
+
+	m_DriveEncoderLeft = new Encoder(MXP_QEI_4_A, MXP_QEI_4_B, true, Encoder::k1X);
+	m_DriveEncoderLeft->SetDistancePerPulse(0.03054323611111); // 6*pi/360
+
+	m_DriveEncoder = m_DriveEncoderRight;
+
 
 	m_MatchTime = 0;
 
@@ -63,7 +69,7 @@ CowRobot::CowRobot()
 
 void CowRobot::Reset()
 {
-	m_DriveEncoder->Reset();
+	ResetEncoders();
 
 	m_PreviousGyroError = 0;
 	m_PreviousDriveError = 0;
@@ -140,13 +146,13 @@ void CowRobot::handle()
 		//1 unused
 
 		//std::cout << "Gyro: " <<  m_Gyro->GetAngle() << std::endl;
-//		std::cout << std::dec
-//				  << m_DriveEncoder->Get() << " "
-//				  << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
+		//std::cout << std::dec
+		//		  << m_DriveEncoder->Get() << " "
+		//	  << m_Gyro->GetAngle() << std::endl;std::cout << "Heading: " << m_Gyro->GetAngle() << " " << m_DriveEncoder->GetDistance() << std::endl;
 
 	}
 
-	std::cout << "start time: " << m_StartTime << " match time: " << m_MatchTime << std::endl;
+	//std::cout << "start time: " << m_StartTime << " match time: " << m_MatchTime << std::endl;
 
 	if ((m_MatchTime > 120) && (m_MatchTime < 135))
 	{
@@ -156,6 +162,7 @@ void CowRobot::handle()
 	}
 	else if ((m_MatchTime > 105) && (m_MatchTime < 110))
 	{
+		m_Light->SetStrobeRate(10);
 		m_Light->SetLightStrobeOverride();
 	}
 	else
@@ -164,6 +171,10 @@ void CowRobot::handle()
 	}
 
 	SmartDashboard::PutNumber("Drive distance", GetDriveDistance());
+	SmartDashboard::PutNumber("lEnc", (int)m_DriveEncoderLeft);
+	SmartDashboard::PutNumber("rEnc", (int)m_DriveEncoderRight);
+	SmartDashboard::PutNumber("enc", (int)m_DriveEncoder);
+
 
 	m_DSUpdateCount++;
 }
