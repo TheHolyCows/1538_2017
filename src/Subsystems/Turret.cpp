@@ -27,6 +27,8 @@ Turret::Turret(uint8_t motor)
 	m_Motor->SetSetpoint(0);
 	m_Lpf = new CowLib::CowLPF(CONSTANT("PIXY_LPF"));
 	m_PixySolenoid = new Solenoid(3);
+	m_LightTime = 0;
+
 }
 
 Turret::~Turret() {
@@ -42,8 +44,7 @@ void Turret::Handle()
 {
 	double position;
 
-	Pixy::PixyPacket packet = Pixy::GetInstance()->GetPacket();
-	double x_pos = m_Lpf->Calculate(packet.analog);
+
 
 //	m_Speed = m_PID->Calculate(packet.x);
 //
@@ -62,24 +63,46 @@ void Turret::Handle()
 	else if(Pixy::GetPixyPacketValidity())
 	{
 		// Suppose turret is at position 40000, need to move -40000 left
-		// packet.x is going to return a value around 239
+		// packet.x is going to retu	rn a value around 239
 		// center is 159.5
 		// position = (159.5 - 239) * 500 = -39750
 		// turret at -40000, packet.x is at 79, ( 159.5 - 79) * 500 = ...
 
-		position = (CONSTANT("PIXY_CENTER_X") - x_pos);
-		std::cout<<"Position: "<<position<<std::endl;
-		SetSetPoint(m_SetPoint + (position * CONSTANT("PIXY_SCALE_FACTOR")));
+
+
+		if(m_AutoTurret && m_LightTime == 0)
+		{
+			m_LightTime = Timer::GetFPGATimestamp();
+		}
 
 		if(m_AutoTurret)
 		{
-			m_Motor->SetSetpoint(m_SetPoint);
 			m_PixySolenoid->Set(true);
+			Pixy::PixyPacket packet = Pixy::GetInstance()->GetPacket();
+			double x_pos = m_Lpf->Calculate(packet.analog);
+
+			position = (CONSTANT("PIXY_CENTER_X") - x_pos);
+			std::cout<<"Position: "<<position<<std::endl;
+
+			if((Timer::GetFPGATimestamp() - m_LightTime) > 1)
+			{
+				SetSetPoint(m_SetPoint + (position * CONSTANT("PIXY_SCALE_FACTOR")));
+				m_Motor->SetSetpoint(m_SetPoint);
+			}
+			else
+			{
+				SetSetPoint(0);
+				m_Motor->SetSetpoint(m_SetPoint);
+				m_Lpf->UpdateBeta(CONSTANT("PIXY_LPF"));
+			}
 		}
 		else
 		{
-			m_Motor->SetSetpoint(0);
+			m_LightTime = 0;
+			SetSetPoint(0);
+			m_Motor->SetSetpoint(m_SetPoint);
 			m_PixySolenoid->Set(false);
+			m_Lpf->UpdateBeta(CONSTANT("PIXY_LPF"));
 		}
 	}
 //	else if(!Pixy::GetPixyPacketValidity())
@@ -115,6 +138,19 @@ void Turret::SetSetPoint(float sp)
 float Turret::GetSetPoint()
 {
 	return m_SetPoint;
+}
+
+bool Turret::IsOnTarget()
+{
+	if(fabs(m_LastPixyValue - CONSTANT("PIXY_CENTER_X") < 0.2) && m_AutoTurret && ((Timer::GetFPGATimestamp() - m_LightTime) > 1))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
 }
 
 void Turret::SetSpeed(float speed)

@@ -88,7 +88,7 @@ bool Shooter::IsOnTarget()
 //	{
 //		targeted = true;
 //	}
-	if(abs(m_MotorA->GetSpeed() - m_MotorA->GetSetpoint()) < CONSTANT("SHOOTER_TOLERANCE"))
+	if(fabs(-m_MotorA->GetSpeed() - m_MotorA->GetSetpoint()) < CONSTANT("SHOOTER_TOLERANCE"))
 	{
 		targeted = true;
 	}

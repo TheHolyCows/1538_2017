@@ -22,10 +22,12 @@ private:
 	float m_PositionMax;
 	float m_PositionMin;
 	float m_SetPoint;
+	float m_LastPixyValue;
 	bool m_OperatorOverride;
 
 	double m_PixyCenterX;
 	double m_PixyScaleFactor;
+	double m_LightTime;
 	CowLib::CowLPF *m_Lpf;
 	bool m_AutoTurret;
 	//const uint32_t CENTER_X = 319 / 2;	// width ranges from 0 to 319
@@ -39,6 +41,7 @@ public:
 	void SetSpeed(float speed);
 	void ResetConstants();
 	void SetSetPoint(float sp);
+	bool IsOnTarget();
 	float GetSetPoint();
 	void SetTurretOperatorOverride(bool override);
 };
