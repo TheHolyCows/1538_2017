@@ -148,7 +148,7 @@ void Shooter::Handle()
 {
 	//Adjust the shooter speed based on distance
 	PixyBlock *pixy = PixyBlock::GetInstance();
-	double y_pos = m_Lpf->Calculate(pixy->GetX());
+	double y_pos = m_Lpf->Calculate(pixy->GetY());
 
 	if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_1")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_2")))
 	{
