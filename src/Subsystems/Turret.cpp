@@ -42,81 +42,49 @@ void Turret::SetAutoTurret(bool turret)
 
 void Turret::Handle()
 {
+	PixyBlock *pixy = PixyBlock::GetInstance();
 	double position;
 
+	// Suppose turret is at position 40000, need to move -40000 left
+	// packet.x is going to retu	rn a value around 239
+	// center is 159.5
+	// position = (159.5 - 239) * 500 = -39750
+	// turret at -40000, packet.x is at 79, ( 159.5 - 79) * 500 = ...
 
-
-//	m_Speed = m_PID->Calculate(packet.x);
-//
-//	if(m_PID->OnTarget(CONSTANT("TURRET_TOLERANCE")))
-//	{
-//		m_PID->ResetIntegrator();
-//	}
-
-	// pixy 0, turret position is -80000
-	// pixy 319, turret position is 80000
-	// center is 159.5, poisition is 0
-	if(m_OperatorOverride)
+	if(m_AutoTurret && m_LightTime == 0)
 	{
-		m_Motor->SetSetpoint(m_SetPoint);
+		m_LightTime = Timer::GetFPGATimestamp();
 	}
-	else if(Pixy::GetPixyPacketValidity())
+
+	if(m_AutoTurret)
 	{
-		// Suppose turret is at position 40000, need to move -40000 left
-		// packet.x is going to retu	rn a value around 239
-		// center is 159.5
-		// position = (159.5 - 239) * 500 = -39750
-		// turret at -40000, packet.x is at 79, ( 159.5 - 79) * 500 = ...
+		m_PixySolenoid->Set(true);
 
+		double x_pos = m_Lpf->Calculate(pixy->GetX());
 
+		position = (CONSTANT("PIXY_CENTER_X") - x_pos);
+		std::cout<<"Position: "<<position<<std::endl;
 
-		if(m_AutoTurret && m_LightTime == 0)
+		if((Timer::GetFPGATimestamp() - m_LightTime) > 1)
 		{
-			m_LightTime = Timer::GetFPGATimestamp();
-		}
-
-		if(m_AutoTurret)
-		{
-			m_PixySolenoid->Set(true);
-			Pixy::PixyPacket packet = Pixy::GetInstance()->GetPacket();
-			double x_pos = m_Lpf->Calculate(packet.analog);
-
-			position = (CONSTANT("PIXY_CENTER_X") - x_pos);
-			std::cout<<"Position: "<<position<<std::endl;
-
-			if((Timer::GetFPGATimestamp() - m_LightTime) > 1)
-			{
-				SetSetPoint(m_SetPoint + (position * CONSTANT("PIXY_SCALE_FACTOR")));
-				m_Motor->SetSetpoint(m_SetPoint);
-			}
-			else
-			{
-				SetSetPoint(0);
-				m_Motor->SetSetpoint(m_SetPoint);
-				m_Lpf->UpdateBeta(CONSTANT("PIXY_LPF"));
-			}
+			SetSetPoint(m_SetPoint + (position * CONSTANT("PIXY_SCALE_FACTOR")));
+			m_Motor->SetSetpoint(m_SetPoint);
 		}
 		else
 		{
-			m_LightTime = 0;
 			SetSetPoint(0);
 			m_Motor->SetSetpoint(m_SetPoint);
-			m_PixySolenoid->Set(false);
 			m_Lpf->UpdateBeta(CONSTANT("PIXY_LPF"));
 		}
 	}
-//	else if(!Pixy::GetPixyPacketValidity())
-//	{
-//		//m_Motor->Set(0);
-//	}
-	//m_Motor->Set(m_Speed);
-
-	//m_Motor->Set
-
-	//position = m_Motor->GetPosition();
-
-	//std::cout<<"Position: "<<position<<std::endl;
-
+	else
+	{
+		m_LightTime = 0;
+		SetSetPoint(0);
+		m_Motor->SetSetpoint(m_SetPoint);
+		m_PixySolenoid->Set(false);
+		m_Lpf->UpdateBeta(CONSTANT("PIXY_LPF"));
+	}
 }
 
 void Turret::SetSetPoint(float sp)

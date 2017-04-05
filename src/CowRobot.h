@@ -59,8 +59,6 @@ private:
 
 	GearIntake *m_GearIntake;
 
-	Pixy *m_Pixy;
-
 	PowerDistributionPanel *m_PowerDistributionPanel;
 
 	CowLib::CowAlphaNum *m_LEDDisplay;

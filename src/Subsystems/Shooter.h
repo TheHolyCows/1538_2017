@@ -20,6 +20,8 @@ private:
 	CANTalon *m_MotorFeeder;
 	float m_Speed;
 	bool m_PIDEnabled;
+	CowLib::CowLPF *m_Lpf;
+
 
 	Shooter();
 public:
@@ -27,8 +29,7 @@ public:
 	void SetManualSpeed(float speed);
 	void SetAutoSpeed(float speedA);
 	void SetPIDState(bool state);
-	double GetMotorASpeed();
-	double GetMotorBSpeed();
+	double GetSpeed();
 	bool IsOnTarget();
 	bool HasShotBall();
 	void SetFeederSpeed(float speed);

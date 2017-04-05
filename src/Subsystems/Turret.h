@@ -12,6 +12,7 @@
 #include <CANTalon.h>
 #include "../CowLib/CowPID.h"
 #include "../CowLib/CowLPF.h"
+#include "../CowPixyBlock.h"
 
 class Turret {
 private:
