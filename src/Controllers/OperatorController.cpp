@@ -54,7 +54,7 @@ void OperatorController::handle(CowRobot *bot)
 	}
 
 	// shoot
-	if ((m_CB->GetOperatorButton(5) || (bot->GetTurret()->IsOnTarget() && fabs(m_CB->GetDriveStickY()) < CONSTANT("AUTO_FIRE_JOYSTICK"))))
+	if ((m_CB->GetOperatorButton(5) || (bot->GetTurret()->IsOnTarget() && CONSTANT("AUTO_FIRE") != 0 && fabs(m_CB->GetDriveStickY()) < CONSTANT("AUTO_FIRE_JOYSTICK"))))
 	{
 		bot->GetShooter()->SetFeederSpeed(-1);
 		bot->GetConveyerUpper()->SetSpeed(-1);

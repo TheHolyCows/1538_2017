@@ -125,12 +125,21 @@ void AutoModeController::handle(CowRobot *bot)
 			bot->ResetEncoders();
 			break;
 		}
-		case CMD_SPOOL_SHOOTER:
+		case CMD_SPOOL_SHOOTER_MIDDLE:
 		{
 			result = true;
 			std::cout << "Setting state to SPOOL_PID_CONTROL" << std::endl;
 			bot->GetShooter()->SetPIDState(true);
-			bot->GetShooter()->SetAutoSpeed(CONSTANT("SHOOTER_RPM"));
+			bot->GetShooter()->SetAutoSpeed(CONSTANT("AUTO_MIDDLE_SHOOTER_RPM"));
+			bot->GetTurret()->SetAutoTurret(true);
+			break;
+		}
+		case CMD_SPOOL_SHOOTER_HOPPER:
+		{
+			result = true;
+			std::cout << "Setting state to SPOOL_PID_CONTROL" << std::endl;
+			bot->GetShooter()->SetPIDState(true);
+			bot->GetShooter()->SetAutoSpeed(CONSTANT("AUTO_HOPPER_SHOOTER_RPM"));
 			bot->GetTurret()->SetAutoTurret(true);
 			break;
 		}
