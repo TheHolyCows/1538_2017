@@ -15,10 +15,11 @@ PixyBlock::Block PixyBlock::m_Blocks[DEFAULT_BLOCK_NUM];
 PixyBlock::BlockType PixyBlock::m_BlockType = PixyBlock::NORMAL_BLOCK;
 double PixyBlock::m_Timestamp = 0;
 int PixyBlock::m_Count = 0;
+bool PixyBlock::m_EnableRead = false;
 
 PixyBlock::PixyBlock()
 {
-	m_I2C = new I2C(I2C::Port::kOnboard, 0x54);
+	m_I2C = new I2C(I2C::Port::kMXP, 0x54);
 	m_Thread = new std::thread(PixyBlock::Handle);
 }
 
@@ -50,7 +51,13 @@ void PixyBlock::Handle()
 
 	while (1)
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		std::this_thread::sleep_for(std::chrono::milliseconds(30));
+
+		if(!m_EnableRead)
+		{
+			continue;
+		}
+
 		DoRead();
 
 		m_Count++;
@@ -69,8 +76,8 @@ PixyBlock *PixyBlock::GetInstance()
 	if (m_Instance == NULL)
 	{
 		m_Instance = new PixyBlock();
+		std::cout << "Made a pixy" << (int)m_Instance << std::endl;
 	}
-
 	return m_Instance;
 }
 
@@ -221,7 +228,8 @@ uint16_t PixyBlock::GetWord()
 {
    uint8_t buffer[2] = { 0, 0 };
 
-   m_I2C->ReadOnly(2, buffer);
+   int bytes = m_I2C->ReadOnly(2, buffer);
+   std::cout << "Received word: " << bytes << std::endl;
    return (buffer[1] << 8) | buffer[0];
 }
 
@@ -229,7 +237,9 @@ uint8_t PixyBlock::GetByte()//gets a byte
 {
    uint8_t buffer[1] = { 0 };
 
-   m_I2C->ReadOnly(1, buffer);
+   int bytes = m_I2C->ReadOnly(1, buffer);
+   std::cout << "Received byte: " << bytes << std::endl;
+
    return buffer[0];
 }
 
@@ -241,4 +251,9 @@ int PixyBlock::GetX()
 int PixyBlock::GetY()
 {
 	return m_LastY;
+}
+
+void PixyBlock::SetRead(bool val)
+{
+	m_EnableRead = val;
 }

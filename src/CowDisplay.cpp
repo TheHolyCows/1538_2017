@@ -130,21 +130,21 @@ void CowDisplay::DisplayState(bool user)
 
 void CowDisplay::DisplayPeriodic()
 {
-	bool userButtonPressed = GetUserButton();
-	bool buttonValue = false;
-
-	if (userButtonPressed && !m_ButtonPressedOnce)
-	{
-		buttonValue = true;
-		m_ButtonPressedOnce = true;
-	}
-	else if(!userButtonPressed && m_ButtonPressedOnce)
-	{
-		m_ButtonPressedOnce = false;
-	}
-
-	m_UserPeriodicCount++;
-	m_UserStatePeriodicCount++;
-
-	DisplayState(buttonValue);
+//	bool userButtonPressed = GetUserButton();
+//	bool buttonValue = false;
+//
+//	if (userButtonPressed && !m_ButtonPressedOnce)
+//	{
+//		buttonValue = true;
+//		m_ButtonPressedOnce = true;
+//	}
+//	else if(!userButtonPressed && m_ButtonPressedOnce)
+//	{
+//		m_ButtonPressedOnce = false;
+//	}
+//
+//	m_UserPeriodicCount++;
+//	m_UserStatePeriodicCount++;
+//
+//	DisplayState(buttonValue);
 }

@@ -51,6 +51,7 @@ private:
 
 	static double m_Timestamp;
 	static int m_Count;
+	static bool m_EnableRead;
 
 	std::thread *m_Thread;
 
@@ -60,6 +61,7 @@ public:
 	static void DoRead();
 	static int GetX();
 	static int GetY();
+	static void SetRead(bool val);
 
 private:
 	PixyBlock();

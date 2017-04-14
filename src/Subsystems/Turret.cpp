@@ -63,8 +63,6 @@ void Turret::Handle()
 		double x_pos = m_Lpf->Calculate(pixy->GetX());
 
 		position = (CONSTANT("PIXY_CENTER_X") - x_pos);
-		std::cout<<"Position: "<<position<<std::endl;
-
 		if((Timer::GetFPGATimestamp() - m_LightTime) > 1)
 		{
 			SetSetPoint(m_SetPoint + (position * CONSTANT("PIXY_SCALE_FACTOR")));

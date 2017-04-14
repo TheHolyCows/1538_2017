@@ -146,34 +146,42 @@ void Shooter::ResetConstants()
 
 void Shooter::Handle()
 {
-	//Adjust the shooter speed based on distance
-	PixyBlock *pixy = PixyBlock::GetInstance();
-	double y_pos = m_Lpf->Calculate(pixy->GetY());
 
-	if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_1")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_2")))
+	if(m_PIDEnabled)
 	{
-		Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_1"));
-	}
-	else if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_2")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_3")))
-	{
-		Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_2"));
-	}
-	else if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_3")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_4")))
-	{
-		Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_3"));
-	}
-	else if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_4")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_5")))
-	{
-		Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_4"));
-	}
-	else
-	{
-		Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_5"));
+		//Adjust the shooter speed based on distance
+		PixyBlock *pixy = PixyBlock::GetInstance();
+		pixy->SetRead(true);
+
+		double y_pos = m_Lpf->Calculate(pixy->GetY());
+		std::cout << "y pos:" << y_pos << std::endl;
+		if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_1")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_2")))
+		{
+			Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_1"));
+		}
+		else if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_2")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_3")))
+		{
+			Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_2"));
+		}
+		else if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_3")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_4")))
+		{
+			Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_3"));
+		}
+		else if((y_pos <= CONSTANT("SHOOTER_HEIGHT_RANGE_4")) && (y_pos > CONSTANT("SHOOTER_HEIGHT_RANGE_5")))
+		{
+			Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_4"));
+		}
+		else
+		{
+			Shooter::SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_5"));
+		}
 	}
 
 	if (!m_PIDEnabled)
 	{
 		m_MotorA->Set(0);
+		PixyBlock *pixy = PixyBlock::GetInstance();
+		pixy->SetRead(false);
 	}
 	SmartDashboard::PutNumber("MotorA Current", m_MotorA->GetOutputCurrent());
 	SmartDashboard::PutNumber("MotorB Current", m_MotorB->GetOutputCurrent());

@@ -53,20 +53,20 @@ void OperatorController::handle(CowRobot *bot)
 		bot->GetTurret()->SetAutoTurret(false);
 	}
 
-	// shoot
-	if ((m_CB->GetOperatorButton(5) || (bot->GetTurret()->IsOnTarget() && fabs(m_CB->GetDriveStickY()) < CONSTANT("AUTO_FIRE_JOYSTICK"))))
-	{
-		bot->GetShooter()->SetFeederSpeed(-1);
-		bot->GetConveyerUpper()->SetSpeed(-1);
-		bot->GetConveyerLower()->SetSpeed(-0.75);
-		bot->GetBallIntakeConveyer()->SetSpeed(-1);
-	}
-	else
-	{
-		bot->GetShooter()->SetFeederSpeed(0);
-		bot->GetConveyerUpper()->SetSpeed(0);
-		bot->GetConveyerLower()->SetSpeed(0);
-	}
+//	// shoot
+//	if ((m_CB->GetOperatorButton(5) || (bot->GetTurret()->IsOnTarget() && fabs(m_CB->GetDriveStickY()) < CONSTANT("AUTO_FIRE_JOYSTICK"))))
+//	{
+//		bot->GetShooter()->SetFeederSpeed(-1);
+//		bot->GetConveyerUpper()->SetSpeed(-1);
+//		bot->GetConveyerLower()->SetSpeed(-0.75);
+//		bot->GetBallIntakeConveyer()->SetSpeed(-1);
+//	}
+//	else
+//	{
+//		bot->GetShooter()->SetFeederSpeed(0);
+//		bot->GetConveyerUpper()->SetSpeed(0);
+//		bot->GetConveyerLower()->SetSpeed(0);
+//	}
 
 	if(m_CB->GetDriveButton(1))
 	{
