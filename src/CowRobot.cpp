@@ -52,8 +52,6 @@ CowRobot::CowRobot()
 	m_LightSolenoid = new Solenoid(0);
 	m_Light = new Light(m_LightSolenoid);
 
-	m_Pixy = Pixy::GetInstance();
-
 	//m_Gyro->Reset();
 	m_PowerDistributionPanel = new PowerDistributionPanel();
 	m_WebServer = new CowLib::CowLogger();

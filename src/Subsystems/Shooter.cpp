@@ -9,6 +9,7 @@
 #include <WPILib.h>
 #include "../CowConstants.h"
 #include <cmath>
+#include "../CowPixyBlock.h"
 
 Shooter::Shooter(uint32_t motorA, uint32_t motorB, uint32_t motorFeeder)
 :
@@ -50,6 +51,8 @@ Shooter::Shooter(uint32_t motorA, uint32_t motorB, uint32_t motorFeeder)
 
 	m_MotorB->DisableNominalClosedLoopVoltage();
 	m_MotorB->SetNominalClosedLoopVoltage(CONSTANT("SHOOTER_MAX_VLT"));
+
+	m_Lpf = new CowLib::CowLPF(CONSTANT("SPEED_LPF"));
 }
 
 void Shooter::SetManualSpeed(float speed)
@@ -110,10 +113,9 @@ bool Shooter::HasShotBall()
 
 }
 
-double Shooter::GetMotorASpeed()
+double Shooter::GetSpeed()
 {
-	//return m_EncoderASpeed;
-	return 0;
+	return -m_MotorA->GetSpeed();
 }
 
 
@@ -138,41 +140,59 @@ void Shooter::ResetConstants()
 
 	m_MotorB->DisableNominalClosedLoopVoltage();
 	m_MotorB->SetNominalClosedLoopVoltage(CONSTANT("SHOOTER_MAX_VLT"));
+
+	m_Lpf->UpdateBeta(CONSTANT("SPEED_LPF"));
 }
 
 void Shooter::Handle()
 {
-	//(rate/360)rps
 
-//	double lpfValue = m_LPF_A->Calculate(m_EncoderASpeed);
-//
-//	double motorAPID_Rate = m_PID_A_Rate->Calculate(lpfValue);
-//
-//	double motorAPID_Voltage = m_PID_A_Rate->GetSetpoint() * (CONSTANT("SHOOTER_MAX_VLT") / robotVoltage) * CONSTANT("SHOOTER_A_F");
-//
-//
-//	if(m_MotorA)
-//	{
-//		if(m_PIDEnabled)
-//		{
-//			//std::cout << "S1: " << m_EncoderASpeed << "VA: " << motorAPID_Voltage << " RV: " << robotVoltage << std::endl;
-//
-//			m_MotorA->Set(motorAPID_Rate + motorAPID_Voltage);
-//		}
-//		else
-//		{
-//			m_MotorA->Set(m_Speed);
-//		}
-//	}
+	if(m_PIDEnabled)
+	{
+		//Adjust the shooter speed based on distance
+		PixyBlock *pixy = PixyBlock::GetInstance();
+		pixy->SetRead(true);
 
-	//SmartDashboard::PutNumber("Shooter RPM raw", -m_EncoderASpeed);
-	//SmartDashboard::PutNumber("Shooter RPM smooth", -lpfValue);
+		double y_pos = m_Lpf->Calculate(pixy->GetY());
+		std::cout << "y pos:" << y_pos << std::endl;
 
-	//m_MotorA->Set(m_Speed);
+		//double shooterSpeed = CONSTANT("SHOOTER_SLOPE") * y_pos + CONSTANT("SHOOTER_B");
+		//SetAutoSpeed(shooterSpeed);
+		if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_1")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_2")))
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_1"));
+		}
+		else if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_2")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_3")))
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_2"));
+		}
+		else if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_3")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_4")))
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_3"));
+		}
+		else if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_4")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_5")))
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_4"));
+		}
+		else if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_5")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_6")))
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_5"));
+		}
+		else if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_6")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_7")))
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_6"));
+		}
+		else
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_7"));
+		}
+	}
 
 	if (!m_PIDEnabled)
 	{
 		m_MotorA->Set(0);
+		PixyBlock *pixy = PixyBlock::GetInstance();
+		pixy->SetRead(false);
 	}
 	SmartDashboard::PutNumber("MotorA Current", m_MotorA->GetOutputCurrent());
 	SmartDashboard::PutNumber("MotorB Current", m_MotorB->GetOutputCurrent());
