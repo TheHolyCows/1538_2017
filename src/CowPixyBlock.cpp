@@ -55,6 +55,7 @@ void PixyBlock::Handle()
 
 		if(!m_EnableRead)
 		{
+			m_I2C->Write(0x00, 0);
 			continue;
 		}
 

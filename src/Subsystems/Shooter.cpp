@@ -155,6 +155,9 @@ void Shooter::Handle()
 
 		double y_pos = m_Lpf->Calculate(pixy->GetY());
 		std::cout << "y pos:" << y_pos << std::endl;
+
+		//double shooterSpeed = CONSTANT("SHOOTER_SLOPE") * y_pos + CONSTANT("SHOOTER_B");
+		//SetAutoSpeed(shooterSpeed);
 		if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_1")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_2")))
 		{
 			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_1"));
@@ -171,9 +174,17 @@ void Shooter::Handle()
 		{
 			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_4"));
 		}
-		else
+		else if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_5")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_6")))
 		{
 			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_5"));
+		}
+		else if((y_pos >= CONSTANT("SHOOTER_HEIGHT_RANGE_6")) && (y_pos < CONSTANT("SHOOTER_HEIGHT_RANGE_7")))
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_6"));
+		}
+		else
+		{
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_7"));
 		}
 	}
 
