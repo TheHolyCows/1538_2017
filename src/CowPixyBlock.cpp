@@ -19,7 +19,7 @@ bool PixyBlock::m_EnableRead = false;
 
 PixyBlock::PixyBlock()
 {
-	m_I2C = new I2C(I2C::Port::kMXP, 0x54);
+	m_I2C = new I2C(I2C::Port::kMXP, 0x56);
 	m_Thread = new std::thread(PixyBlock::Handle);
 }
 
@@ -229,8 +229,10 @@ uint16_t PixyBlock::GetWord()
 {
    uint8_t buffer[2] = { 0, 0 };
 
-   int bytes = m_I2C->ReadOnly(2, buffer);
-   std::cout << "Received word: " << bytes << std::endl;
+   int bytes = 0;
+   bytes += m_I2C->ReadOnly(1, &buffer[0]);
+   bytes += m_I2C->ReadOnly(1, &buffer[1]);
+   printf("Received word: 0x%x 0x%x\r\n", buffer[0], buffer[1]);
    return (buffer[1] << 8) | buffer[0];
 }
 

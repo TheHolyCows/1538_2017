@@ -184,7 +184,7 @@ void Shooter::Handle()
 		}
 		else
 		{
-			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_7"));
+			SetAutoSpeed(CONSTANT("SHOOTER_HEIGHT_SPEED_4"));
 		}
 	}
 
