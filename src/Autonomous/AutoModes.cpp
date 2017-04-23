@@ -92,16 +92,18 @@ AutoModes::AutoModes()
 	m_Modes["Gear Straight - Shoot Left"];
 	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_RIGHT_ENCODER, 0, 0, 0, true, 0.01));
 	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 80, 0, 0.375, true, 2));
+	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 80, 0, 0.375, false, 0.5));
 	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 70, 0, 0.375, false, 1));
 	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 70, 0, 0.375, false, 1));
 	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 55, 45, 0.5, true, 0.5));
 	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_SPOOL_SHOOTER_MIDDLE, 55, 45, 0, false, 0.025));
-	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 75, 45, 0.5, true, 2));
+	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 55, 45, 0.5, true, 2));
 	m_Modes["Gear Straight - Shoot Left"].push_back(RobotCommand(CMD_SHOOT, 55, 45, 0.5, true, 15));
 
 	m_Modes["Gear Straight - Shoot Right"];
 	m_Modes["Gear Straight - Shoot Right"].push_back(RobotCommand(CMD_LEFT_ENCODER, 0, 0, 0, true, 0.01));
 	m_Modes["Gear Straight - Shoot Right"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 80, 0, 0.375, true, 2));
+	m_Modes["Gear Straight - Shoot Right"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 80, 0, 0.375, false, 0.5));
 	m_Modes["Gear Straight - Shoot Right"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 70, 0, 0.375, false, 1));
 	m_Modes["Gear Straight - Shoot Right"].push_back(RobotCommand(CMD_HOLD_DISTANCE, 70, 0, 0.375, false, 1));
 	m_Modes["Gear Straight - Shoot Right"].push_back(RobotCommand(CMD_DRIVE_DISTANCE, 55, -45, 0.5, true, 0.5));
