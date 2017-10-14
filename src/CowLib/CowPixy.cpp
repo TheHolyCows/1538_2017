@@ -6,7 +6,7 @@
  */
 
 #include <CowLib/CowPixy.h>
-#include <CowLib/CowLpf.h>
+#include <CowLib/CowLPF.h>
 #include "../CowConstants.h"
 
 Pixy *Pixy::m_Instance         = NULL;
